@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:/Users/levan/GitHub/bayesian_sequential_design_simulations/./utils/getRslurmResults.R="9FECEE2F"
 C:/Users/levan/GitHub/bayesian_sequential_design_simulations/plotPowerByN.R="7684478B"
 C:/Users/levan/GitHub/bayesian_sequential_design_simulations/specify_params_send_to_slurm.R="81E92745"
@@ -8,3 +9,8 @@ C:/Users/levan/GitHub/concept_gen_analysis/scripts/bayesian_sequential_design/ge
 C:/Users/levan/GitHub/concept_gen_analysis/scripts/bayesian_sequential_design/plotPowerByN.R="5DEBEF02"
 C:/Users/levan/GitHub/concept_gen_analysis/scripts/bayesian_sequential_design/simulate_rep_measures.R="66EB0C60"
 C:/Users/levan/GitHub/concept_gen_analysis/scripts/bayesian_sequential_design/specify_params_send_to_slurm.R="CA0B58F2"
+=======
+/home/lb08/GitHub/bayesian_sequential_design_simulations/./utils/getRslurmResults.R="8FD0FB42"
+/home/lb08/GitHub/bayesian_sequential_design_simulations/README.md="E16DF16D"
+/home/lb08/GitHub/bayesian_sequential_design_simulations/utils/getRslurmResults.R="2F052991"
+>>>>>>> 41374fe2b5102bd6ee974233fd20c65d7510b5d6
