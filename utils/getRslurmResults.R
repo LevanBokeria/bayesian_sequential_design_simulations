@@ -49,17 +49,18 @@ getRslurmResults <- function (nIter,d1_str,nLimit,crit1,saveDF,readDF){
                 limit     <- rep(limit, times = tempUnllist_seq)
                 
                 # Create sample size sequences
-                n <- c()
+                # browser()
+                n_sss <- c()
                 for(i in 1:length(n_raw)){
-                        n <- c(n, seq(minN, n_raw[i], batchSize[1]))
+                    n_sss <- c(n_sss, seq(minN, n_raw[i], batchSize[1]))
                 }
-                
-                print(length(n))
+                browser()
+                print(length(n_sss))
                 
                 # Make DF
                 df <- data.frame(id = id,
                                   d = d,
-                                  n = n,
+                                  n = n_sss,
                                   crit1 = crit1,
                                   crit2 = crit2,
                                   batchSize = batchSize,
