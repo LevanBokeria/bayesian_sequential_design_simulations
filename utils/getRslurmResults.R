@@ -54,6 +54,8 @@ getRslurmResults <- function (nIter,d1_str,nLimit,crit1,saveDF,readDF){
                         n <- c(n, seq(minN, n_raw[i], batchSize[1]))
                 }
                 
+                print(length(n))
+                
                 # Make DF
                 df <- data.frame(id = id,
                                   d = d,
