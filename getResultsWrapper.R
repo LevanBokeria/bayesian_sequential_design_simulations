@@ -30,10 +30,10 @@ nLimit  <- 200
 crit1   <- 6
 crit2   <- 1/6
 minN    <- 24
-batchSize <- 8
+batchSize <- 16
 
 
-readDF <- T # if DF was saved previously, just read it without recreating it
+readDF <- F # if DF was saved previously, just read it without recreating it
 
 if (readDF){
         saveDF <- F # should df be saved? If already done, assign FALSE        
@@ -41,7 +41,7 @@ if (readDF){
         saveDF <- T
 }
 
-saveOutData <- F # save the resulting table containing probabilities of H1 and H0?
+saveOutData <- T # save the resulting table containing probabilities of H1 and H0?
 
 # Call the function to construct a dataframe from slurm results ################
 df <- getRslurmResults(nIter,d1_str,nLimit,crit1,saveDF,readDF)
