@@ -26,10 +26,10 @@ source('./utils/getStats.R')
 nIter   <- 10000
 d1      <- 0.5
 d1_str  <- '05'
-nLimit  <- 200
+nLimit  <- 208
 crit1   <- 6
 crit2   <- 1/6
-minN    <- 24
+minN    <- 32
 batchSize <- 16
 
 
