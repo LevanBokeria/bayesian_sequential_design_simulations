@@ -22,14 +22,14 @@ nIter         <- 10000
 
 # Number of participants per group, because we're running 
 # between participant comparison.
-nLimit        <- 200 
+nLimit        <- 200
 
 d0        <- 0.0
-d1        <- 0.5
+d1        <- 0.25
 crit1     <- 6
 crit2     <- 1/6
-batchSize <- 8
-minN      <- 32
+batchSize <- 16
+minN      <- 24
 
 # Name for saving folder
 saveFolder <- paste('d1_', d1, '_limpg_', nLimit,
@@ -50,7 +50,7 @@ helperfunction <- function(minN, d, crit1, crit2, batchSize, limit){
   dataG1 <- rnorm(n, 0, 1)
   dataG2 <- rnorm(n, d, 1)
   bf     <- reportBF(ttestBF(dataG1, dataG2, paired = TRUE,
-                             nullInterval = c(-Inf, 0)))
+                             nullInterval = c(-Inf, 0))[1],4)
   
   # bf     <- reportBF(ttestBF(dataG1, dataG2, paired = FALSE), 4)
   
@@ -59,7 +59,8 @@ helperfunction <- function(minN, d, crit1, crit2, batchSize, limit){
     n         <- n + batchSize
     dataG1      <- c(dataG1, rnorm(batchSize, 0, 1))
     dataG2      <- c(dataG2, rnorm(batchSize, d, 1))
-    bf[i + 1] <- reportBF(ttestBF(dataG1, dataG2, paired = FALSE), 4)
+    bf[i + 1] <- reportBF(ttestBF(dataG1, dataG2, paired = TRUE,
+                                  nullInterval = c(-Inf, 0))[1],4)
     i         <- i + 1
   }
   
