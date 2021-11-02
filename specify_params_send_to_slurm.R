@@ -22,13 +22,13 @@ nIter         <- 10000
 
 # Number of participants per group, because we're running 
 # between participant comparison.
-nLimit        <- 208 
+nLimit        <- 200 
 
 d0        <- 0.0
 d1        <- 0.5
 crit1     <- 6
 crit2     <- 1/6
-batchSize <- 16
+batchSize <- 8
 minN      <- 32
 
 # Name for saving folder
