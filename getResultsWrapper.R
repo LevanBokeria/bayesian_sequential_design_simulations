@@ -24,8 +24,8 @@ source('./utils/getStats.R')
 
 # Define global variables
 nIter   <- 10000
-d1      <- 0.25
-d1_str  <- '025'
+d1      <- 0.5
+d1_str  <- '05'
 nLimit  <- 200
 crit1   <- 6
 crit2   <- 1/6

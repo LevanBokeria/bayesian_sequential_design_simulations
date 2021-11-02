@@ -9,15 +9,27 @@ Type BFManual() to open the manual.
 ✓ tidyr   1.1.4     ✓ stringr 1.4.0
 ✓ readr   2.0.2     ✓ forcats 0.5.1
 ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-x tidyr::expand() masks Matrix::expand()
-x dplyr::filter() masks stats::filter()
-x dplyr::lag()    masks stats::lag()
-x tidyr::pack()   masks Matrix::pack()
-x tidyr::unpack() masks Matrix::unpack()
-t is large; approximation invoked.
-t is large; approximation invoked.
-t is large; approximation invoked.
-t is large; approximation invoked.
+x dplyr::arrange()   masks plyr::arrange()
+x purrr::compact()   masks plyr::compact()
+x dplyr::count()     masks plyr::count()
+x tidyr::expand()    masks Matrix::expand()
+x dplyr::failwith()  masks plyr::failwith()
+x dplyr::filter()    masks stats::filter()
+x dplyr::id()        masks plyr::id()
+x dplyr::lag()       masks stats::lag()
+x dplyr::mutate()    masks plyr::mutate()
+x tidyr::pack()      masks Matrix::pack()
+x dplyr::rename()    masks plyr::rename()
+x dplyr::summarise() masks plyr::summarise()
+x dplyr::summarize() masks plyr::summarize()
+x tidyr::unpack()    masks Matrix::unpack()
+
+Attaching package: ‘glue’
+
+The following object is masked from ‘package:dplyr’:
+
+    collapse
+
 t is large; approximation invoked.
 t is large; approximation invoked.
 t is large; approximation invoked.

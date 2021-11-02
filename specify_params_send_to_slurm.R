@@ -25,7 +25,7 @@ nIter         <- 10000
 nLimit        <- 200
 
 d0        <- 0.0
-d1        <- 0.5
+d1        <- 0.25
 crit1     <- 6
 crit2     <- 1/6
 batchSize <- 16
@@ -55,7 +55,7 @@ helperfunction <- function(minN, d, crit1, crit2, batchSize, limit){
   # bf     <- reportBF(ttestBF(dataG1, dataG2, paired = FALSE), 4)
   
   dataG1 <- rnorm(n,d,1)
-  bf <- reportBF(ttestBF(dataG1,nullInterval = c(-Inf,0))[1],4)
+  bf <- reportBF(ttestBF(dataG1,nullInterval = c(0,Inf))[1],4)
   
   # Within simulation loop
   while(bf[length(bf)] < crit1 & bf[length(bf)] > crit2 & n < limit){
@@ -66,7 +66,7 @@ helperfunction <- function(minN, d, crit1, crit2, batchSize, limit){
     #                               nullInterval = c(-Inf, 0))[1],4)
     
     dataG1    <- c(dataG1, rnorm(batchSize, d, 1))
-    bf[i + 1] <- reportBF(ttestBF(dataG1,nullInterval = c(-Inf,0))[1],4)    
+    bf[i + 1] <- reportBF(ttestBF(dataG1,nullInterval = c(0,Inf))[1],4)    
     
     i         <- i + 1
   }
