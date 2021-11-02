@@ -54,8 +54,8 @@ getRslurmResults <- function (nIter,d1_str,nLimit,crit1,saveDF,readDF){
                 for(i in 1:length(n_raw)){
                     n_sss <- c(n_sss, seq(minN, n_raw[i], batchSize[1]))
                 }
-                browser()
-                print(length(n_sss))
+                # browser()
+                # print(length(n_sss))
                 
                 # Make DF
                 df <- data.frame(id = id,

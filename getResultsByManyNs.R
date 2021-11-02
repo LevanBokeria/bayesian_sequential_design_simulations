@@ -15,8 +15,8 @@ library(tidyverse)
 
 # Variables below specify which simulation file will be read for analysis
 nIterEv <- 10000 # maybe the original simulation ran 10,000, but we want less?
-d1      <- 0.5
-d1_str  <- '05'
+d1      <- 0.25
+d1_str  <- '025'
 nLimit  <- 200
 crit1   <- 6
 crit2   <- 1/6
@@ -25,7 +25,7 @@ minN    <- 24
 # What are the various maxNs we want to analyze?
 nFrom <- 24 
 nTo   <- 200 
-nBy   <- 8
+nBy   <- 16
 altNs <- seq(nFrom,nTo,by = nBy)
 
 # Flags

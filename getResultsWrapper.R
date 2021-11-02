@@ -24,13 +24,13 @@ source('./utils/getStats.R')
 
 # Define global variables
 nIter   <- 10000
-d1      <- 0.5
-d1_str  <- '05'
+d1      <- 0.25
+d1_str  <- '025'
 nLimit  <- 200
 crit1   <- 6
 crit2   <- 1/6
 minN    <- 24
-batchSize <- 8
+batchSize <- 16
 
 
 readDF <- F # if DF was saved previously, just read it without recreating it
@@ -41,7 +41,7 @@ if (readDF){
         saveDF <- T
 }
 
-saveOutData <- F # save the resulting table containing probabilities of H1 and H0?
+saveOutData <- T # save the resulting table containing probabilities of H1 and H0?
 
 # Call the function to construct a dataframe from slurm results ################
 df <- getRslurmResults(nIter,d1_str,nLimit,crit1,saveDF,readDF)
