@@ -12,15 +12,15 @@ library(rio)
 # Define global variables ####################################################
 
 nIterEv <- 10000
-d1      <- 0.25
-d1_str  <- '025'
-nLimit  <- 200
-crit1   <- 6
-crit2   <- 1/6
+d1      <- 0.5
+d1_str  <- '05'
+nLimit  <- 240
+crit1   <- 10
+crit2   <- 1/10
 
 nFrom <- 24
-nTo   <- 200
-nBy   <- 16
+nTo   <- 240
+nBy   <- 12
 
 altNs   <- seq(nFrom,nTo,by = nBy)
 
