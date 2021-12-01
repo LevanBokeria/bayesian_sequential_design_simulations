@@ -22,7 +22,7 @@ nIter         <- 10000
 
 # Number of participants per group, because we're running 
 # between participant comparison.
-nLimit        <- 400
+nLimit        <- 240 
 
 d0        <- 0.0
 d1        <- 0.5
