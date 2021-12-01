@@ -22,15 +22,15 @@ nIter         <- 10000
 
 # Number of participants per group, because we're running 
 # between participant comparison.
-nLimit        <- 200
+nLimit        <- 400
 
 d0        <- 0.0
-d1        <- 0.25
-crit1     <- 6
-crit2     <- 1/6
-batchSize <- 16
+d1        <- 0.5
+crit1     <- 10
+crit2     <- 1/10
+batchSize <- 12
 minN      <- 24
-#test
+
 # Name for saving folder
 saveFolder <- paste('d1_', d1, '_limpg_', nLimit,
                     '_crit1_', crit1, '_minN_', minN,
@@ -53,9 +53,16 @@ helperfunction <- function(minN, d, crit1, crit2, batchSize, limit){
   #                            nullInterval = c(-Inf, 0))[1],4)
   
   # bf     <- reportBF(ttestBF(dataG1, dataG2, paired = FALSE), 4)
-  
+ 
+  # Paired design 
   dataG1 <- rnorm(n,d,1)
-  bf <- reportBF(ttestBF(dataG1,nullInterval = c(0,Inf))[1],4)
+
+  # One tailed   
+  # bf <- reportBF(ttestBF(dataG1,nullInterval = c(0,Inf))[1],4)
+  
+  # Two-tailed
+  bf <- reportBF(ttestBF(dataG1),4)
+  
   
   # Within simulation loop
   while(bf[length(bf)] < crit1 & bf[length(bf)] > crit2 & n < limit){
@@ -66,7 +73,12 @@ helperfunction <- function(minN, d, crit1, crit2, batchSize, limit){
     #                               nullInterval = c(-Inf, 0))[1],4)
     
     dataG1    <- c(dataG1, rnorm(batchSize, d, 1))
-    bf[i + 1] <- reportBF(ttestBF(dataG1,nullInterval = c(0,Inf))[1],4)    
+    
+    # One tailed
+    # bf[i + 1] <- reportBF(ttestBF(dataG1,nullInterval = c(0,Inf))[1],4)
+    
+    # Two tailed
+    bf[i + 1] <- reportBF(ttestBF(dataG1),4)    
     
     i         <- i + 1
   }
