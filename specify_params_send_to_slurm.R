@@ -30,7 +30,7 @@ crit1     <- 6
 crit2     <- 1/6
 batchSize <- 16
 minN      <- 24
-
+#test
 # Name for saving folder
 saveFolder <- paste('d1_', d1, '_limpg_', nLimit,
                     '_crit1_', crit1, '_minN_', minN,
