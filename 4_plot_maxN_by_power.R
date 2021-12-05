@@ -1,0 +1,95 @@
+# This script will plot the power by various max N per group 
+
+# Clear the environment and load libraries, etc ###############################
+rm(list=ls())
+
+pacman::p_load(tidyverse,
+               rio)
+
+# Define global variables ####################################################
+
+saveFig <- F
+
+# Load the file
+folderName <- 'try_1'
+sumstats <- import(file.path('./analysis_results',
+                 'preprocessing',
+                 folderName,
+                 'sumstats.RData'))
+
+sumstats <- sumstats %>% ungroup()
+# Get the % simulations supporting conditions
+sumstats <- sumstats %>%
+        mutate(perc_simulations = n_simulations*100/10000)
+
+
+
+# How many unique combination of factors are here? 
+# For each, make a separate plot
+unique_combs <-
+        sumstats %>%
+        select(minN,
+               d,
+               crit1,
+               crit2,
+               batchSize,
+               limit,
+               test_type,
+               side_type) %>% 
+        distinct()
+        
+n_combs <- nrow(unique_combs)        
+
+print(paste('There are ', 
+            n_combs, 
+            ' unique combination of factors. They are:',
+            sep=''))
+print(unique_combs)        
+
+
+# Create the plot #############################################################
+
+# x tick marks?
+x_ticks <- seq(sumstats$minN[1],sumstats$limit[1],sumstats$batchSize[1])
+
+for (iComb in seq(1,n_combs)){
+        
+        print(unique_combs[iComb,])
+        
+        title_string <- paste(
+                'd =',unique_combs$d[iComb],
+                'minN =',unique_combs$minN[iComb],
+                'crit1 =',unique_combs$crit1[iComb],
+                'crit2 =',unique_combs$crit2[iComb],
+                '\n',
+                'batchSize =',unique_combs$batchSize[iComb],
+                'limit =',unique_combs$limit[iComb],
+                '\n',
+                'test_type =',unique_combs$test_type[iComb],
+                'side_type =',unique_combs$side_type[iComb],
+                sep=' '
+        )
+        
+        fig <- sumstats %>%
+                filter(d == unique_combs$d[iComb],
+                       minN == unique_combs$minN[iComb],
+                       crit1 == unique_combs$crit1[iComb],
+                       crit2 == unique_combs$crit2[iComb],
+                       batchSize == unique_combs$batchSize[iComb],
+                       limit == unique_combs$limit[iComb],
+                       test_type == unique_combs$test_type[iComb],
+                       side_type == unique_combs$side_type[iComb]) %>%
+                ggplot(aes(x=altMaxN,
+                           y=perc_simulations,
+                           group=bf_status,
+                           color=bf_status)) +
+                geom_line() +
+                geom_point() +
+                scale_x_continuous(breaks=x_ticks) +
+                scale_y_continuous(breaks=seq(0,100,10)) +  
+                ylab('% of simulations') +
+                xlab('max N per group') +                 
+                ggtitle(title_string)
+
+        print(fig)
+}

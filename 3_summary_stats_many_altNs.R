@@ -14,7 +14,7 @@ pacman::p_load(data.table,
 # Define global variables ###################################################
 
 # Save the resulting summary statistics datafile?
-saveOutData <- FALSE
+saveOutData <- TRUE
 
 # # What are the various maxNs we want to analyze?
 nFrom <- 24
@@ -37,6 +37,12 @@ unique_combs <- sims_preprocessed %>%
         distinct()
 
 n_combs <- nrow(unique_combs)
+
+print(paste('There are ', 
+            n_combs, 
+            ' unique combination of factors. They are:',
+            sep=''))
+print(unique_combs)
 
 # Get the probabilities #####################################################
 
@@ -114,7 +120,8 @@ sumstats <-
                  side_type,
                  altMaxN,
                  bf_status) %>%
-        dplyr::summarise(n_simulations = n())
+        dplyr::summarise(n_simulations = n()) %>%
+        ungroup()
         # pivot_wider(id_cols = c(
         #         minN,
         #         d,
