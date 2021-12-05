@@ -14,3 +14,14 @@ x dplyr::filter() masks stats::filter()
 x dplyr::lag()    masks stats::lag()
 x tidyr::pack()   masks Matrix::pack()
 x tidyr::unpack() masks Matrix::unpack()
+
+Attaching package: ‘data.table’
+
+The following objects are masked from ‘package:dplyr’:
+
+    between, first, last
+
+The following object is masked from ‘package:purrr’:
+
+    transpose
+
