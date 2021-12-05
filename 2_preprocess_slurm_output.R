@@ -10,7 +10,7 @@ pacman::p_load(data.table,
                tidyverse,
                rio)
 
-saveDF <- T
+saveDF <- TRUE
 
 folder <- 'try_1'
 
@@ -27,6 +27,30 @@ saveName <- paste(saveFolder,
 
 # If the save directory doesn't exist, create it
 ifelse(!dir.exists(saveFolder), dir.create(saveFolder, recursive = T), 'Save directory already exists!')
+
+
+# First, move the slurm output ################################################
+# from the working directory to the ./data dir ####
+
+old_path <- paste('./_rslurm_',folder,sep = '')
+new_path <- file.path('./data',folder)
+
+# Create the new path if it doesn't exist
+ifelse(!dir.exists(new_path), dir.create(new_path, recursive = T), '')
+
+# Get the list of files
+current_files = list.files(old_path, full.names = TRUE)
+
+# Copy them
+file.copy(from = current_files, 
+          to = new_path, 
+          overwrite = TRUE, 
+          recursive = FALSE, 
+          copy.mode = TRUE,
+          copy.date = TRUE)
+
+# Now delete the original data
+unlink(old_path, recursive = TRUE)
 
 # Import the file and concatenate #############################################
 tempList <- import(filename)

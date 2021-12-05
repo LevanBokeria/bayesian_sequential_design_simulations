@@ -7,11 +7,9 @@
 rm(list=ls())
 
 # Libraries
-# library(plyr)
-library(assortedRFunctions)
-library(tidyverse)
-library(rio)
-library(data.table)
+pacman::p_load(data.table,
+               tidyverse,
+               rio)
 
 # Define global variables ###################################################
 
