@@ -24,7 +24,7 @@ cpus_per_node <- 16
 nIter         <- 10000
 
 # Number of participants 
-nLimit    <- 72
+nLimit    <- 396
 
 
 d         <- c(0.5,1)
