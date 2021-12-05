@@ -18,7 +18,7 @@ filename <- paste('./data/_rslurm_',
         folder,
         '/results_0.RDS',sep = '')
 
-saveFolder <- file.path('./analysis_output/preprocessing',
+saveFolder <- file.path('./analysis_results/preprocessing',
                         folder)
 
 saveName <- paste(saveFolder,
