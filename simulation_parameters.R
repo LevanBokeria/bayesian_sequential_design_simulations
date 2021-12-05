@@ -3,8 +3,9 @@
 # This is the main script where you setup simulation parameters, and they get
 # passed to slurm to perform fast computation.
 
-# After slurm is done with the results, use script getRSlurmResults.R to extract
-# results into a readable format.
+
+
+# Setup simulation parameters and flags #######################################
 
 # Clear the environment
 rm(list=ls())
@@ -13,28 +14,26 @@ rm(list=ls())
 set.seed(911225)
 
 # Libraries
-library(rslurm)
-library(BayesFactor)
-library(assortedRFunctions)
-library(tidyverse)
+pacman::p_load(rslurm,
+               BayesFactor,
+               assortedRFunctions,
+               tidyverse,
+               rio)
 
-# Job parameters
+# Slurm job parameters
 n_nodes       <- 1
 cpus_per_node <- 16
 nIter         <- 10000
 
-# Number of participants 
+# Sequential design parameters
 nLimit    <- 396
-
-
 d         <- c(0,0.5,1)
-
 crit1     <- c(10)
-
 crit2     <- c(1/10)
-
-batchSize <- c(12)
 minN      <- 24
+batchSize <- c(12) 
+# Note: if various batchSizes are simlated the post-processing scripts must be
+# careful when doing stats on alternative maxNs.
 
 # What type of test is it?
 test_types <- c('unpaired','paired')
@@ -49,7 +48,7 @@ submitJob <- T
 # Simulate locally?
 simLocal <- F
 
-# Function
+# Define the function ########################################################
 helperfunction <- function(minN, d, crit1, crit2, batchSize, limit, 
                            test_type, side_type){
 
@@ -135,7 +134,10 @@ helperfunction <- function(minN, d, crit1, crit2, batchSize, limit,
         return(results)
 }
 
-# Parameters
+
+# Create parameters #########################################################
+# slurm will iterate over these with the helperfunction
+
 
 # First, create all combinations
 cart_prod <- expand.grid(minN,
@@ -153,11 +155,10 @@ params <- cart_prod %>%
         slice(rep(1:n(), each=nIter)) %>%
         mutate(across(c('test_type','side_type'),as.character))
 
+# Run the simlation ##########################################################
 
-# Try locally once
-# results <- helperfunction(params[1,1],params[1,2],params[1,3],params[1,4],params[1,5],params[1,6],params[1,7],params[1,8])
 
-# Try locally for every row
+## Try locally for every row -----------------------------------------------
 if (simLocal){
         results <- do.call(Map, c(f=helperfunction,params))
         saveRDS(results, file = paste(
@@ -165,6 +166,8 @@ if (simLocal){
                 saveFolder,
                 '/results_0.RDS',sep = ''))
 }
+
+## Or try SLURM  ------------------------------------------------------------
 
 # Create job
 sjob1 <- slurm_apply(helperfunction,
