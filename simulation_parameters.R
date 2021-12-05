@@ -21,7 +21,7 @@ library(tidyverse)
 # Job parameters
 n_nodes       <- 1
 cpus_per_node <- 16
-nIter         <- 10
+nIter         <- 10000
 
 # Number of participants 
 nLimit    <- 72

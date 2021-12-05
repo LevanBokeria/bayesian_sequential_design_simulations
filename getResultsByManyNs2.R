@@ -10,6 +10,8 @@ rm(list=ls())
 # library(plyr)
 library(assortedRFunctions)
 library(tidyverse)
+library(rio)
+library(data.table)
 
 # Define global variables ###################################################
 
@@ -56,91 +58,6 @@ unique_combs <- sims_preprocessed %>%
 
 n_combs <- nrow(unique_combs)
 
-
-## Construct a function to get stats from simulations ==========================
-getStats <- function(data){
-    
-    # What IDs do we have?
-    simIDs <- unique(data$id)
-    
-    # How many IDs are we going to analyze?
-    simIDAnalyzed <- simIDs[1:nIterEv]
-    
-    # Whats the effect size?
-    iEffect <- data$d[1]
-    
-    print(paste('d=',iEffect,sep=''))
-    
-    # Create a data frame to report the stats
-    outStats <- data.frame(d    = rep(iEffect,length(altNs)),
-                           maxN = numeric(length(altNs)),
-                           H0   = numeric(length(altNs)),
-                           H1   = numeric(length(altNs)),
-                           und  = numeric(length(altNs)))  
-    
-    # Add row indices
-    data$rowIdx <- 1:nrow(data)
-    
-    # Create a data frame to store results of simulations for various max N
-    bf_maxN        <- data.frame(rowIdx = 1:nIterEv)
-    bf_maxN_status <- data.frame(rowIdx = 1:nIterEv)
-    
-    for (iN in altNs){
-        iStr                 <- paste('maxN',iN,sep='_')
-        bf_maxN[iStr]        <- numeric(nIterEv)
-        bf_maxN_status[iStr] <- rep('undecided',nIterEv)
-    }
-    
-    counterAltN <- 1
-    
-    # For each maxN, get stats for supporting H0 or H1
-    for (iN in altNs){
-        
-        print(paste('iN=',iN,sep=''))
-        
-        colName <- paste('maxN',iN,sep='_')
-        
-        counterID <- 1
-        for (iID in simIDAnalyzed){
-            
-            if (iID %% 500 == 0){
-                print(paste('d=', iEffect,' iN=',iN,' iID=',iID,sep=''))
-            }
-            
-            getRow <- data[data$n <= iN & 
-                                 data$id == iID,]$rowIdx
-            getRow <- getRow[length(getRow)]
-            
-            bf_maxN[colName][counterID,] <- data$bf[getRow]
-            
-            counterID <- counterID + 1
-            
-        }
-        
-        # Now, record the status
-        logIdxH1 <- bf_maxN[colName] > crit1
-        logIdxH0 <- bf_maxN[colName] < crit2
-        
-        bf_maxN_status[colName][logIdxH1,] <- 'H1'
-        bf_maxN_status[colName][logIdxH0,] <- 'H0'
-        
-        # Record in outStats
-        outStats$maxN[counterAltN]   <- iN
-        outStats$H0[counterAltN]  <- sum(bf_maxN_status[colName] == 'H0')
-        outStats$H1[counterAltN]  <- sum(bf_maxN_status[colName] == 'H1')
-        outStats$und[counterAltN] <- sum(bf_maxN_status[colName] == 'undecided')
-        
-        # increment counter
-        counterAltN <- counterAltN + 1
-        
-    } # for iN in altN
-    
-    return(list('outStats'=outStats,
-                'bf_maxN'=bf_maxN,
-                'bf_maxN_status'=bf_maxN_status))
-    
-} # function getStats
-
 ## Get the probabilities ========================================
 
 outdf = list()
@@ -184,7 +101,8 @@ outdfbinded <- outdfbinded %>%
         )))
 
 # Now summarize whichever way you want
-outdfbinded %>%
+sumstats <- 
+        outdfbinded %>%
         group_by(minN,
                  d,
                  crit1,
@@ -195,42 +113,32 @@ outdfbinded %>%
                  side_type,
                  altMaxN,
                  bf_status) %>%
-        dplyr::summarise(n = n()) %>% View()
-        pivot_wider(id_cols = c(
-                minN,
-                d,
-                crit1,
-                crit2,
-                batchSize,
-                limit,
-                test_type,
-                side_type,
-                altMaxN
-                ),
-                names_from = bf_status,
-                values_from = n,
-                names_prefix = 'supports_') %>% View()
-
-
-
-outData_d0 <- df %>%
-    subset(d == 0) %>%
-    getStats()
-
-outData_d1 <- df %>%
-    subset(d == d1) %>%
-    getStats()
+        dplyr::summarise(n = n())
+        # pivot_wider(id_cols = c(
+        #         minN,
+        #         d,
+        #         crit1,
+        #         crit2,
+        #         batchSize,
+        #         limit,
+        #         test_type,
+        #         side_type,
+        #         altMaxN
+        #         ),
+        #         names_from = bf_status,
+        #         values_from = n,
+        #         names_prefix = 'supports_') %>% View()
 
 ## Save outData ================================================================
 
-saveNameOutData <- paste('analysis_output/resultsByManyNs_d_', d1_str,
-                         '_crit1_', crit1, '_',
-                         altNs[1], '_to_', altNs[length(altNs)],
-                         '_by_', nBy,
-                         '.RData',sep='')
-
-if (saveOutData){
-  save(outData_d0, outData_d1, file = saveNameOutData)
-}
+# saveNameOutData <- paste('analysis_output/resultsByManyNs_d_', d1_str,
+#                          '_crit1_', crit1, '_',
+#                          altNs[1], '_to_', altNs[length(altNs)],
+#                          '_by_', nBy,
+#                          '.RData',sep='')
+# 
+# if (saveOutData){
+#         save(outData_d0, outData_d1, file = saveNameOutData)
+# }
 
 
