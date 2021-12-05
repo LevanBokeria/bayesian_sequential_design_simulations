@@ -26,7 +26,7 @@ library(data.table)
 # 
 # # What are the various maxNs we want to analyze?
 nFrom <- 24
-nTo   <- 72
+nTo   <- 396
 nBy   <- 12
 altNs <- seq(nFrom,nTo,by = nBy)
 # 
@@ -128,6 +128,20 @@ sumstats <-
         #         names_from = bf_status,
         #         values_from = n,
         #         names_prefix = 'supports_') %>% View()
+
+
+## Plot results ================================================================
+
+sumstats %>%
+        ggplot(aes(x=altMaxN,
+                   y=n,
+                   group=bf_status,
+                   color=bf_status)) +
+        geom_line() +
+        geom_point() +
+        facet_grid(d~test_type)
+
+
 
 ## Save outData ================================================================
 
