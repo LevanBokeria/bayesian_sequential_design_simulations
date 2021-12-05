@@ -21,7 +21,7 @@ library(tidyverse)
 # Job parameters
 n_nodes       <- 1
 cpus_per_node <- 16
-nIter         <- 10
+nIter         <- 10000
 
 # Number of participants 
 nLimit    <- 72
@@ -44,10 +44,10 @@ side_types <- c('two_tailed')
 saveFolder <- 'try_1'
 
 # Submit the slurm job?
-submitJob <- F
+submitJob <- T
 
 # Simulate locally?
-simLocal <- T
+simLocal <- F
 
 # Function
 helperfunction <- function(minN, d, crit1, crit2, batchSize, limit, 

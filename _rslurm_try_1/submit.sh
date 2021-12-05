@@ -4,4 +4,4 @@
 #SBATCH --cpus-per-task=16
 #SBATCH --job-name=try_1
 #SBATCH --output=slurm_%a.out
-C:/PROGRA~1/R/R-41~1.1/bin/x64/Rscript --vanilla slurm_run.R
+/imaging/local/software/R/3.5.3shlib/bin/Rscript --vanilla slurm_run.R
