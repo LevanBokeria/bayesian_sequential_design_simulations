@@ -16,14 +16,15 @@ set.seed(911225)
 # Libraries
 pacman::p_load(rslurm,
                BayesFactor,
-               assortedRFunctions,
                tidyverse,
                rio)
+
+source('./utils/reportBF.R')
 
 # Slurm job parameters
 n_nodes       <- 1
 cpus_per_node <- 16
-nIter         <- 10000
+nIter         <- 100
 
 # Sequential design parameters
 nLimit    <- 96
@@ -161,6 +162,13 @@ params <- cart_prod %>%
 ## Try locally for every row -----------------------------------------------
 if (simLocal){
         results <- do.call(Map, c(f=helperfunction,params))
+        
+        # If the save directory doesn't exist, create it
+        ifelse(!dir.exists(paste('./_rslurm_',saveFolder,sep='')),
+               dir.create(paste('./_rslurm_',saveFolder,sep=''), recursive = T),
+               'Save directory already exists!')
+        
+        
         saveRDS(results, file = paste(
                 './_rslurm_', 
                 saveFolder,
