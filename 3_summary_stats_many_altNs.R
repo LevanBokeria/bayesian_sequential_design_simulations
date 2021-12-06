@@ -137,20 +137,6 @@ sumstats <-
         #         values_from = n,
         #         names_prefix = 'supports_') %>% View()
 
-
-## Plot results ================================================================
-
-sumstats %>%
-        ggplot(aes(x=altMaxN,
-                   y=n,
-                   group=bf_status,
-                   color=bf_status)) +
-        geom_line() +
-        geom_point() +
-        facet_grid(d~test_type)
-
-
-
 # Save the data ###############################################################
 
 saveNameOutData <- file.path('./analysis_results/preprocessing',

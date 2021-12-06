@@ -26,8 +26,8 @@ cpus_per_node <- 16
 nIter         <- 10000
 
 # Sequential design parameters
-nLimit    <- 396
-d         <- c(0,0.5,1)
+nLimit    <- 96
+d         <- c(0.5)
 crit1     <- c(10)
 crit2     <- c(1/10)
 minN      <- 24
@@ -36,22 +36,22 @@ batchSize <- c(12)
 # careful when doing stats on alternative maxNs.
 
 # What type of test is it?
-test_types <- c('unpaired','paired')
+test_types <- c('paired')
 side_types <- c('two_tailed')
 
 # Name for saving folder
-saveFolder <- 'try_1'
+saveFolder <- 'try_2'
 
 # Submit the slurm job?
-submitJob <- T
+submitJob <- F
 
 # Simulate locally?
-simLocal <- F
+simLocal <- T
 
 # Define the function ########################################################
 helperfunction <- function(minN, d, crit1, crit2, batchSize, limit, 
                            test_type, side_type){
-
+        
         bf      <- c()
         results <- data.frame()
         i       <- 1
