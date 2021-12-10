@@ -19,7 +19,7 @@ pacman::p_load(rslurm,
                rio)
 
 # Source a function created by Alex Quent
-source('./utils/reportBF.R')
+# source('./utils/reportBF.R')
 
 # Setup simulation parameters and flags #######################################
 
@@ -30,7 +30,7 @@ nIter         <- 1000
 
 # Sequential design parameters
 nLimit    <- 100
-d         <- c(0.5)
+d         <- c(0.25,0.5)
 crit1     <- c(10)
 crit2     <- c(1/10)
 minN      <- 20
@@ -42,19 +42,24 @@ test_types <- c('paired')
 side_types <- c('two_tailed')
 
 # Name for saving folder
-saveFolder <- 'try_2'
+saveFolder <- 'try_4'
 
 # Submit the slurm job?
-submitJob <- F
+submitJob <- T
 
 # Simulate locally? This will take much longer for large jobs
-simLocal <- T
+simLocal <- F
 
 # Define the function ########################################################
 # This function will be applied to specified parameters many times by slurm.
 
 helperfunction <- function(minN, d, crit1, crit2, batchSize, limit, 
                            test_type, side_type){
+        
+        # Subfunction to report the BF
+        reportBF = function(x, digits){
+                round(as.numeric(as.vector(x)), digits)
+        }
         
         bf      <- c()
         results <- data.frame()
@@ -137,7 +142,6 @@ helperfunction <- function(minN, d, crit1, crit2, batchSize, limit,
         results$side_type <- side_type
         return(results)
 }
-
 
 # Create parameters #########################################################
 # slurm will iterate over these with the helperfunction

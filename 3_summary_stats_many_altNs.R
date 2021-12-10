@@ -32,7 +32,7 @@ altNs <- seq(nFrom,nTo,by = nBy)
 
 # Which preprocessed data to load?
 # This must correspond to where the simulation job was saved.
-folderName <- 'try_2'
+folderName <- 'try_4'
 
 # Load the data and get unique factor combinations ############################
 sims_preprocessed <- import(file.path(

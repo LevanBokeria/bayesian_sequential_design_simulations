@@ -11,11 +11,11 @@ pacman::p_load(tidyverse,
 # Load the file
 
 # This must correspond to the variable given to the previous scripts
-folderName <- 'try_2'
+folderName <- 'try_4'
 
 sumstats <- import(file.path('./analysis_results',
                  folderName,
-                 'sumstats.RData'))
+                 'power_table.RData'))
 
 # How many unique combination of factors are here? 
 # For each, make a separate plot
