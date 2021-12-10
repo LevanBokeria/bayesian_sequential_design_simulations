@@ -6,7 +6,7 @@
 # - sims_preprocessed.RData: 
 
 # Output:
-# - sumstats: 
+# - power_table: 
 
 # Libraries ######################################
 rm(list=ls())
@@ -49,7 +49,7 @@ n_combs <- nrow(unique_combs)
 
 print(paste('There are ', 
             n_combs, 
-            ' unique combination of factors. They are:',
+            ' unique combinations of factors. They are:',
             sep=''))
 print(unique_combs)
 
@@ -105,7 +105,22 @@ outdfbinded <- outdfbinded %>%
 # How many iterations were given to the original simulation job? (nIter variable)
 nIter <- max(sims_preprocessed$id)
 
-sumstats <- 
+average_n_to_run <- 
+        outdfbinded %>%
+        group_by(minN,
+                 d,
+                 crit1,
+                 crit2,
+                 batchSize,
+                 limit,
+                 test_type,
+                 side_type,
+                 altMaxN) %>%
+        summarise(mean_n = mean(n),
+                  median_n = median(n)) %>% 
+        ungroup()
+        
+power_table <- 
         outdfbinded %>%
         group_by(minN,
                  d,
@@ -117,34 +132,36 @@ sumstats <-
                  side_type,
                  altMaxN,
                  bf_status) %>%
-        dplyr::summarise(n_simulations = n(),
-                         perc_simulations = n_simulations/nIter*100) %>%
-        ungroup()
+        summarise(n_simulations = n(),
+                  perc_simulations = n_simulations/nIter*100) %>%
+        ungroup() %>%
+        pivot_wider(id_cols = c(
+                        minN,
+                        d,
+                        crit1,
+                        crit2,
+                        batchSize,
+                        limit,
+                        test_type,
+                        side_type,
+                        altMaxN
+                        ),
+                        names_from = bf_status,
+                        values_from = c(n_simulations,perc_simulations),
+                        names_prefix = 'supports_')
 
-        # Below is optional code for turning the "wide" dataset into a "long" one.
-        # pivot_wider(id_cols = c(
-        #         minN,
-        #         d,
-        #         crit1,
-        #         crit2,
-        #         batchSize,
-        #         limit,
-        #         test_type,
-        #         side_type,
-        #         altMaxN
-        #         ),
-        #         names_from = bf_status,
-        #         values_from = n,
-        #         names_prefix = 'supports_') %>% View()
+# Now unite these two tables
+power_table <- merge(power_table,
+                     average_n_to_run)
 
 # Save the data ###############################################################
 
 saveNameOutData <- file.path('./analysis_results',
                              folderName,
-                             'sumstats.RData')
+                             'power_table.RData')
 
 if (saveData){
-        save(sumstats, file = saveNameOutData)
+        save(power_table, file = saveNameOutData)
 }
 
 
