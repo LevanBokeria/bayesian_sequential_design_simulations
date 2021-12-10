@@ -26,23 +26,23 @@ pacman::p_load(rslurm,
 # Slurm job parameters
 n_nodes       <- 1
 cpus_per_node <- 16
-nIter         <- 1000
+nIter         <- 10000
 
 # Sequential design parameters
-nLimit    <- 100
-d         <- c(0.25,0.5)
-crit1     <- c(10)
-crit2     <- c(1/10)
-minN      <- 20
-batchSize <- 10
+nLimit    <- 456
+d         <- c(0,0.5)
+crit1     <- c(6)
+crit2     <- c(1/6)
+minN      <- 24
+batchSize <- 12
 # Note: if various batchSizes are simulated the post-processing scripts might not work.
 
 # What type of test is it?
-test_types <- c('paired')
-side_types <- c('two_tailed')
+test_types <- c('paired','unpaired')
+side_types <- c('two_tailed','one_tailed')
 
 # Name for saving folder
-saveFolder <- 'try_4'
+saveFolder <- 'try_7'
 
 # Submit the slurm job?
 submitJob <- T
