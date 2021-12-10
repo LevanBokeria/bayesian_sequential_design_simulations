@@ -1,9 +1,14 @@
-# This script will load the data frame that is a result of simulations.
-# Then, instead of calculating the stats on the max N that was indicated in the
-# original simulations,
-# this function can calculate stats many hypothetical max Ns specified.
+# This script will load the preprocessed dataframe from 2_preprocess_slurm_output.R
+# It will then calculate the statistics on supporting H1/H0/undecided for many 
+# alternative maxN stopping rules. 
 
-# Clear the environment, load libraries ######################################
+# Input:
+# - sims_preprocessed.RData: 
+
+# Output:
+# - sumstats: 
+
+# Libraries ######################################
 rm(list=ls())
 
 # Libraries
@@ -11,23 +16,27 @@ pacman::p_load(data.table,
                tidyverse,
                rio)
 
-# Define global variables ###################################################
+# Define the parameters and flags #############################################
 
 # Save the resulting summary statistics datafile?
-saveOutData <- TRUE
+saveData <- T
 
-# # What are the various maxNs we want to analyze?
-nFrom <- 24
-nTo   <- 396
-nBy   <- 12
+# What are the various maxNs we want to analyze?
+# nFrom and nBy must match what was given to the simulation script.
+# nTo can be different than the maxN that was given to the original simulation job,
+# but it cannot be larger than it.
+nFrom <- 20
+nTo   <- 100
+nBy   <- 10
 altNs <- seq(nFrom,nTo,by = nBy)
 
 # Which preprocessed data to load?
-folderName <- 'try_1'
+# This must correspond to where the simulation job was saved.
+folderName <- 'try_2'
 
 # Load the data and get unique factor combinations ############################
 sims_preprocessed <- import(file.path(
-        './analysis_results/preprocessing',folderName,'sims_preprocessed.RData')
+        './analysis_results',folderName,'sims_preprocessed.RData')
         )
 
 # How many unique combinations of factors do we have? 
@@ -45,13 +54,17 @@ print(paste('There are ',
 print(unique_combs)
 
 # Get the probabilities #####################################################
+# Of supporting H1 or H0 or neither
 
 outdf = list()
 
+# For each combination of simulation parameters:
 for (iComb in seq(1,nrow(unique_combs))){
         
         print(unique_combs[iComb,])
         
+        # From the overall dataframe, select only the part that belongs to 
+        # the simulation with the current combination of parameters
         tempDF <- sims_preprocessed %>%
                 filter(d == unique_combs$d[iComb],
                        minN == unique_combs$minN[iComb],
@@ -62,7 +75,7 @@ for (iComb in seq(1,nrow(unique_combs))){
                        test_type == unique_combs$test_type[iComb],
                        side_type == unique_combs$side_type[iComb])
 
-
+        # For each alternative maxN stopping rule:
         for (iN in altNs){
                 print(iN)
 
@@ -72,26 +85,6 @@ for (iComb in seq(1,nrow(unique_combs))){
                         slice_tail() %>%
                         mutate(altMaxN = iN)
         }
-        
-        # Maybe a bit faster?
-        # for (iN in altNs){
-        #         print(iN)
-        #         
-        #         outdf[[length(outdf)+1]] <- sims_preprocessed %>%
-        #                 filter(d == unique_combs$d[iComb],
-        #                        minN == unique_combs$minN[iComb],
-        #                        crit1 == unique_combs$crit1[iComb],
-        #                        crit2 == unique_combs$crit2[iComb],
-        #                        batchSize == unique_combs$batchSize[iComb],
-        #                        limit == unique_combs$limit[iComb],
-        #                        test_type == unique_combs$test_type[iComb],
-        #                        side_type == unique_combs$side_type[iComb]) %>%
-        #                 filter(n <= iN) %>% 
-        #                 group_by(id) %>%
-        #                 slice_tail() %>%
-        #                 mutate(altMaxN = iN)
-        # }              
-        
         
 }
 
@@ -108,6 +101,10 @@ outdfbinded <- outdfbinded %>%
         )))
 
 # Summary statistics ########################################################
+
+# How many iterations were given to the original simulation job? (nIter variable)
+nIter <- max(sims_preprocessed$id)
+
 sumstats <- 
         outdfbinded %>%
         group_by(minN,
@@ -120,8 +117,11 @@ sumstats <-
                  side_type,
                  altMaxN,
                  bf_status) %>%
-        dplyr::summarise(n_simulations = n()) %>%
+        dplyr::summarise(n_simulations = n(),
+                         perc_simulations = n_simulations/nIter*100) %>%
         ungroup()
+
+        # Below is optional code for turning the "wide" dataset into a "long" one.
         # pivot_wider(id_cols = c(
         #         minN,
         #         d,
@@ -139,11 +139,11 @@ sumstats <-
 
 # Save the data ###############################################################
 
-saveNameOutData <- file.path('./analysis_results/preprocessing',
+saveNameOutData <- file.path('./analysis_results',
                              folderName,
                              'sumstats.RData')
 
-if (saveOutData){
+if (saveData){
         save(sumstats, file = saveNameOutData)
 }
 

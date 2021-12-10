@@ -4,8 +4,7 @@
 # passed to slurm to perform fast computation.
 
 
-
-# Setup simulation parameters and flags #######################################
+# Global parameters and libraries #######################################
 
 # Clear the environment
 rm(list=ls())
@@ -19,22 +18,24 @@ pacman::p_load(rslurm,
                tidyverse,
                rio)
 
+# Source a function created by Alex Quent
 source('./utils/reportBF.R')
+
+# Setup simulation parameters and flags #######################################
 
 # Slurm job parameters
 n_nodes       <- 1
 cpus_per_node <- 16
-nIter         <- 100
+nIter         <- 1000
 
 # Sequential design parameters
-nLimit    <- 96
+nLimit    <- 100
 d         <- c(0.5)
 crit1     <- c(10)
 crit2     <- c(1/10)
-minN      <- 24
-batchSize <- c(12) 
-# Note: if various batchSizes are simlated the post-processing scripts must be
-# careful when doing stats on alternative maxNs.
+minN      <- 20
+batchSize <- 10
+# Note: if various batchSizes are simulated the post-processing scripts might not work.
 
 # What type of test is it?
 test_types <- c('paired')
@@ -46,10 +47,12 @@ saveFolder <- 'try_2'
 # Submit the slurm job?
 submitJob <- F
 
-# Simulate locally?
+# Simulate locally? This will take much longer for large jobs
 simLocal <- T
 
 # Define the function ########################################################
+# This function will be applied to specified parameters many times by slurm.
+
 helperfunction <- function(minN, d, crit1, crit2, batchSize, limit, 
                            test_type, side_type){
         
@@ -149,7 +152,8 @@ cart_prod <- expand.grid(minN,
                      nLimit,
                      test_types,
                      side_types)
-names(cart_prod) <- c('minN','d','crit1','crit2','batchSize','limit','test_type','side_type')
+names(cart_prod) <- c('minN','d','crit1','crit2','batchSize','limit',
+                      'test_type','side_type')
 
 # Now, repeat each of these combinations nIter times
 params <- cart_prod %>% 

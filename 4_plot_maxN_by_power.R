@@ -6,23 +6,16 @@ rm(list=ls())
 pacman::p_load(tidyverse,
                rio)
 
-# Define global variables ####################################################
-
-saveFig <- F
+# Load the data ################################################################
 
 # Load the file
-folderName <- 'try_1'
+
+# This must correspond to the variable given to the previous scripts
+folderName <- 'try_2'
+
 sumstats <- import(file.path('./analysis_results',
-                 'preprocessing',
                  folderName,
                  'sumstats.RData'))
-
-sumstats <- sumstats %>% ungroup()
-# Get the % simulations supporting conditions
-sumstats <- sumstats %>%
-        mutate(perc_simulations = n_simulations*100/10000)
-
-
 
 # How many unique combination of factors are here? 
 # For each, make a separate plot
@@ -49,6 +42,10 @@ print(unique_combs)
 
 # Create the plot #############################################################
 
+# For each of the simualtions, make a separate plot.
+# The user can change this part of the code to plot the data whichever way they 
+# want
+
 # x tick marks?
 x_ticks <- seq(sumstats$minN[1],sumstats$limit[1],sumstats$batchSize[1])
 
@@ -58,16 +55,16 @@ for (iComb in seq(1,n_combs)){
         
         title_string <- paste(
                 'd =',unique_combs$d[iComb],
-                'minN =',unique_combs$minN[iComb],
-                'crit1 =',unique_combs$crit1[iComb],
-                'crit2 =',unique_combs$crit2[iComb],
+                '; minN =',unique_combs$minN[iComb],
+                '; crit1 =',unique_combs$crit1[iComb],
+                '; crit2 =',unique_combs$crit2[iComb],
                 '\n',
                 'batchSize =',unique_combs$batchSize[iComb],
-                'limit =',unique_combs$limit[iComb],
+                '; limit =',unique_combs$limit[iComb],
                 '\n',
                 'test_type =',unique_combs$test_type[iComb],
-                'side_type =',unique_combs$side_type[iComb],
-                sep=' '
+                '; side_type =',unique_combs$side_type[iComb],
+                sep=''
         )
         
         fig <- sumstats %>%
