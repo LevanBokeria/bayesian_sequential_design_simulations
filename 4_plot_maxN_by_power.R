@@ -11,7 +11,7 @@ pacman::p_load(tidyverse,
 # Load the file
 
 # This must correspond to the variable given to the previous scripts
-folderName <- 'try_4'
+folderName <- 'try_2'
 
 power_table <- import(file.path('./analysis_results',
                  folderName,

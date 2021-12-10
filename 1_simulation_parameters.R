@@ -31,8 +31,8 @@ nIter         <- 10000
 # Sequential design parameters
 nLimit    <- 456
 d         <- c(0,0.5)
-crit1     <- c(6)
-crit2     <- c(1/6)
+crit1     <- c(6,10)
+crit2     <- c(1/6,1/10)
 minN      <- 24
 batchSize <- 12
 # Note: if various batchSizes are simulated the post-processing scripts might not work.
@@ -42,7 +42,7 @@ test_types <- c('paired','unpaired')
 side_types <- c('two_tailed','one_tailed')
 
 # Name for saving folder
-saveFolder <- 'try_7'
+saveFolder <- 'try_4'
 
 # Submit the slurm job?
 submitJob <- T

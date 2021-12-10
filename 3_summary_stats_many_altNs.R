@@ -25,14 +25,14 @@ saveData <- T
 # nFrom and nBy must match what was given to the simulation script.
 # nTo can be different than the maxN that was given to the original simulation job,
 # but it cannot be larger than it.
-nFrom <- 20
-nTo   <- 100
-nBy   <- 10
+nFrom <- 24
+nTo   <- 456
+nBy   <- 12
 altNs <- seq(nFrom,nTo,by = nBy)
 
 # Which preprocessed data to load?
 # This must correspond to where the simulation job was saved.
-folderName <- 'try_4'
+folderName <- 'try_2'
 
 # Load the data and get unique factor combinations ############################
 sims_preprocessed <- import(file.path(
