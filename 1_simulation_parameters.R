@@ -70,7 +70,7 @@ helperfunction <- function(minN, d, crit1, crit2, batchSize, limit,
         if (side_type == 'two_tailed'){
                 null_interval <- NULL
         } else if (side_type == 'one_tailed'){
-                null_interval <- C(0,Inf)
+                null_interval <- c(0,Inf)
         }
         
         # Is this paired or unpaired?
