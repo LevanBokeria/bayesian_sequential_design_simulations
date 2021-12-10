@@ -150,6 +150,14 @@ power_table <-
                         values_from = c(n_simulations,perc_simulations),
                         names_prefix = 'supports_')
 
+# If no simulation supported H0, then manually create these columns:
+if (!'n_simulations_supports_H0' %in% names(power_table)){
+        
+        power_table$n_simulations_supports_H0 <- 0
+        power_table$perc_simulations_supports_H0 <- 0
+        
+}
+
 # Now unite these two tables
 power_table <- merge(power_table,
                      average_n_to_run)

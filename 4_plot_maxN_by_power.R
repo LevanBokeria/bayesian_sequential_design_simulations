@@ -13,14 +13,14 @@ pacman::p_load(tidyverse,
 # This must correspond to the variable given to the previous scripts
 folderName <- 'try_4'
 
-sumstats <- import(file.path('./analysis_results',
+power_table <- import(file.path('./analysis_results',
                  folderName,
                  'power_table.RData'))
 
 # How many unique combination of factors are here? 
 # For each, make a separate plot
 unique_combs <-
-        sumstats %>%
+        power_table %>%
         select(minN,
                d,
                crit1,
@@ -46,8 +46,19 @@ print(unique_combs)
 # The user can change this part of the code to plot the data whichever way they 
 # want
 
+
+# Turn it into a long form version
+power_table_long <- 
+        power_table %>%
+        select(-starts_with('n_sim')) %>%
+        pivot_longer(cols = c(perc_simulations_supports_H1,
+                              perc_simulations_supports_H0,
+                              perc_simulations_supports_undecided),
+                     names_to = 'bf_status',
+                     values_to = 'perc_simulations')
+
 # x tick marks?
-x_ticks <- seq(sumstats$minN[1],sumstats$limit[1],sumstats$batchSize[1])
+x_ticks <- seq(power_table$minN[1],power_table$limit[1],power_table$batchSize[1])
 
 for (iComb in seq(1,n_combs)){
         
@@ -67,7 +78,7 @@ for (iComb in seq(1,n_combs)){
                 sep=''
         )
         
-        fig <- sumstats %>%
+        fig <- power_table_long %>%
                 filter(d == unique_combs$d[iComb],
                        minN == unique_combs$minN[iComb],
                        crit1 == unique_combs$crit1[iComb],
