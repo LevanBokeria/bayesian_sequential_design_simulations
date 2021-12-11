@@ -44,7 +44,7 @@ unique_combs <- unique_combs %>%
         filter(crit1 == 10,
                crit2 == 1/10,
                test_type == 'unpaired',
-               side_type == 'one_tailed') %>% 
+               side_type == 'two_tailed') %>% 
         droplevels()
 n_combs <- nrow(unique_combs)
 
