@@ -32,7 +32,7 @@ altNs <- seq(nFrom,nTo,by = nBy)
 
 # Which preprocessed data to load?
 # This must correspond to where the simulation job was saved.
-folderName <- 'try_2'
+folderName <- 'try_1'
 
 # Load the data and get unique factor combinations ############################
 sims_preprocessed <- import(file.path(
@@ -103,8 +103,14 @@ outdfbinded <- outdfbinded %>%
 # Summary statistics ########################################################
 
 # How many iterations were given to the original simulation job? (nIter variable)
-nIter <- max(sims_preprocessed$id)
+nIter <- sims_preprocessed %>% 
+        distinct(id, .keep_all = T) %>%
+        group_by(minN,d,crit1,crit2,batchSize,limit,test_type,side_type) %>% 
+        mutate(iter_idx = row_number()) %>%
+        ungroup() %>%
+        select(iter_idx) %>% max()
 
+# Whats the average n to run to reach a certain power?
 average_n_to_run <- 
         outdfbinded %>%
         group_by(minN,
@@ -155,6 +161,22 @@ if (!'n_simulations_supports_H0' %in% names(power_table)){
         
         power_table$n_simulations_supports_H0 <- 0
         power_table$perc_simulations_supports_H0 <- 0
+        
+}
+
+# If no simulation supported H1, then manually create these columns:
+if (!'n_simulations_supports_H1' %in% names(power_table)){
+        
+        power_table$n_simulations_supports_H1 <- 0
+        power_table$perc_simulations_supports_H1 <- 0
+        
+}
+
+# If no simulation supported undecided, then manually create these columns:
+if (!'n_simulations_supports_undecided' %in% names(power_table)){
+        
+        power_table$n_simulations_supports_undecided <- 0
+        power_table$perc_simulations_supports_undecided <- 0
         
 }
 

@@ -11,7 +11,7 @@ pacman::p_load(tidyverse,
 # Load the file
 
 # This must correspond to the variable given to the previous scripts
-folderName <- 'try_2'
+folderName <- 'try_1'
 
 power_table <- import(file.path('./analysis_results',
                  folderName,
@@ -65,16 +65,16 @@ for (iComb in seq(1,n_combs)){
         print(unique_combs[iComb,])
         
         title_string <- paste(
-                'd =',unique_combs$d[iComb],
-                '; minN =',unique_combs$minN[iComb],
-                '; crit1 =',unique_combs$crit1[iComb],
-                '; crit2 =',unique_combs$crit2[iComb],
+                'd = ',unique_combs$d[iComb],
+                '; crit1 = ',round(unique_combs$crit1[iComb],4),
+                '; crit2 = ',round(unique_combs$crit2[iComb],4),
                 '\n',
-                'batchSize =',unique_combs$batchSize[iComb],
-                '; limit =',unique_combs$limit[iComb],
+                'minN = ',unique_combs$minN[iComb],
+                '; batchSize = ',unique_combs$batchSize[iComb],
+                '; limit = ',unique_combs$limit[iComb],
                 '\n',
-                'test_type =',unique_combs$test_type[iComb],
-                '; side_type =',unique_combs$side_type[iComb],
+                'test_type = ',unique_combs$test_type[iComb],
+                '; side_type = ',unique_combs$side_type[iComb],
                 sep=''
         )
         
@@ -100,4 +100,39 @@ for (iComb in seq(1,n_combs)){
                 ggtitle(title_string)
 
         print(fig)
+        
+        ## Also plot power by mean/median n to run
+        fig2 <- power_table_long %>%
+                filter(d == unique_combs$d[iComb],
+                       minN == unique_combs$minN[iComb],
+                       crit1 == unique_combs$crit1[iComb],
+                       crit2 == unique_combs$crit2[iComb],
+                       batchSize == unique_combs$batchSize[iComb],
+                       limit == unique_combs$limit[iComb],
+                       test_type == unique_combs$test_type[iComb],
+                       side_type == unique_combs$side_type[iComb]) %>%
+                ggplot(aes(x=perc_simulations,
+                           y=mean_n)) +
+                geom_line(aes(color='mean')) +
+                geom_point(color='blue') +
+                geom_line(aes(y=median_n,color='median')) +
+                geom_point(aes(y=median_n),
+                           color='orange') +
+                scale_x_continuous(breaks=seq(0,100,10)) +
+                scale_colour_manual("", 
+                                    values = c("mean"="blue", 
+                                               "median"="orange")) + 
+                ylab('Number of participants') +
+                xlab('"Power"') +
+                facet_wrap(~bf_status,
+                           labeller = labeller(
+                                   bf_status = c("perc_simulations_supports_H0" = '"Power" for H0',
+                                                 "perc_simulations_supports_H1" = '"Power" for H1',
+                                                 "perc_simulations_supports_undecided" = '"Power" for undecided'))) + 
+                ggtitle(paste('Mean and median participants to achieve a certain power.\n',
+                              title_string,
+                              sep=''))
+        
+        print(fig2)
+
 }

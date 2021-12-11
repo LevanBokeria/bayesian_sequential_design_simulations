@@ -2,11 +2,6 @@
 
 # 1. Move the folder that slurm created in the working directory.This is done so
 # that the working directory doesn't get cluttered.
-# 2. Preprocess the output of slurm and create a nice dataframe with each row 
-# being a step taken during the simulations, i.e. another batchSize and the result.
-
-# The created dataframe can then be used to do whatever summary statistics you
-# want to do on it.
 
 # Libraries #####################################################
 pacman::p_load(data.table,
@@ -20,20 +15,7 @@ saveDF <- TRUE
 
 # This name should correspond to the name used in 1_simulation_parameters.R script
 # So that the correct files are loaded and preprocessed.
-folder <- 'try_2'
-
-# The new folder where to save the preprocessed data
-saveFolder <- file.path('./analysis_results',
-                        folder)
-
-# Name of the preprocessed data file.
-saveName <- paste(saveFolder,
-                  '/sims_preprocessed.RData',
-                  sep = '')
-
-# If the save directory doesn't exist, create it
-ifelse(!dir.exists(saveFolder), 
-       dir.create(saveFolder, recursive = T), 'Save directory already exists!')
+folder <- 'try_4'
 
 # Name of the file that has the simulation output
 filename <- paste('./data/',
@@ -41,7 +23,7 @@ filename <- paste('./data/',
                   '/results_0.RDS',
                   sep = '')
 
-# First, move the slurm output ################################################
+# Move the slurm output ################################################
 # from the working directory to the ./data dir
 # This is done so that the working directory isn't cluttered with slurm output
 
@@ -56,7 +38,7 @@ ifelse(!dir.exists(new_path),
 # Get the list of files
 current_files = list.files(old_path, full.names = TRUE)
 
-# Check that results_0.RDS is part of the files! If its not, then slurm isnt'
+# Check that results_0.RDS is part of the files! If its not, then slurm isn't
 # done with the simulations. Alert the user to wait.
 if (file.path(old_path,'results_0.RDS') %in% current_files){
 
@@ -73,21 +55,11 @@ if (file.path(old_path,'results_0.RDS') %in% current_files){
         # Now delete the original data
         unlink(old_path, recursive = TRUE)
         
-        # Import the file and concatenate #############################################
-        tempList <- import(filename)
-        
-        sims_preprocessed <- rbindlist(tempList, idcol = 'id')
-        
-        # Save the file #####################################################
-        if (saveDF){
-                save(sims_preprocessed, file = saveName)
-        }        
-        
 } else {
-        
-        print('Could not find the results_0.RDS file.')
-        print('This probably means that the simulations are not yet finished.')
-        print('Or they have already been moved to the ./data folder')        
+        stop(paste('\nCould not find the results_0.RDS file.\n',
+        'This probably means that the simulations are not yet finished.\n', 
+        'Or they have already been moved to the ./data folder',
+        sep=''))
         
 }
 
