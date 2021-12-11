@@ -32,7 +32,7 @@ altNs <- seq(nFrom,nTo,by = nBy)
 
 # Which preprocessed data to load?
 # This must correspond to where the simulation job was saved.
-folderName <- 'try_1'
+folderName <- 'try_4'
 
 # Load the data and get unique factor combinations ############################
 sims_preprocessed <- import(file.path(
@@ -61,6 +61,7 @@ outdf = list()
 # For each combination of simulation parameters:
 for (iComb in seq(1,nrow(unique_combs))){
         
+        print(paste('Combination #',as.character(iComb),'\n',sep=''))
         print(unique_combs[iComb,])
         
         # From the overall dataframe, select only the part that belongs to 

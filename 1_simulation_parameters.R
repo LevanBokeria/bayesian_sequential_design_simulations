@@ -3,6 +3,9 @@
 # This is the main script where you setup simulation parameters, and they get
 # passed to slurm to perform fast computation.
 
+# You can also run the simulations locally, without submitting to slurm. But 
+# that will be much, much slower. Its advised to do this only for small jobs.
+
 
 # Global parameters and libraries #######################################
 
@@ -18,9 +21,6 @@ pacman::p_load(rslurm,
                tidyverse,
                rio)
 
-# Source a function created by Alex Quent
-# source('./utils/reportBF.R')
-
 # Setup simulation parameters and flags #######################################
 
 # Slurm job parameters
@@ -28,14 +28,18 @@ n_nodes       <- 1
 cpus_per_node <- 16
 nIter         <- 10000
 
-# Sequential design parameters
-nLimit    <- 456
-d         <- c(0,0.5)
-crit1     <- c(6,10)
-crit2     <- c(1/6,1/10)
-minN      <- 24
-batchSize <- 12
-# Note: if various batchSizes are simulated the post-processing scripts might not work.
+# Sequential design parameters. 
+# For d, crit1, and crit2 you can enter a vector of numbers.
+
+nLimit    <- 456 # maximum number of participants to run
+d         <- c(0,0.5) # various effect sizes to consider
+crit1     <- c(6,10) # criteria for stopping for BF10
+crit2     <- c(1/6,1/10) # criteria for stopping for BF01
+minN      <- 24 # Initial minimum number of participants per group
+batchSize <- 12 # How many participants to add per group when neither of the criteria are reached.
+
+# Note: if various batchSizes are simulated the post-processing scripts
+# might not work.
 
 # What type of test is it?
 test_types <- c('paired','unpaired')
@@ -81,8 +85,8 @@ helperfunction <- function(minN, d, crit1, crit2, batchSize, limit,
 
                 #Calculate the initial bf
                 bf <- reportBF(ttestBF(
-                        dataG1,
                         dataG2,
+                        dataG1,
                         nullInterval = null_interval
                 )[1],4)
                 
@@ -110,8 +114,8 @@ helperfunction <- function(minN, d, crit1, crit2, batchSize, limit,
                         dataG2      <- c(dataG2, rnorm(batchSize, d, 1))
                         
                         bf[i + 1] <- reportBF(ttestBF(
-                                dataG1, 
-                                dataG2,
+                                dataG2, 
+                                dataG1,
                                 nullInterval = null_interval
                                 )[1],4)
                         
@@ -169,6 +173,8 @@ params <- cart_prod %>%
 
 ## Try locally for every row -----------------------------------------------
 if (simLocal){
+        print('Simulating locally...')
+        
         results <- do.call(Map, c(f=helperfunction,params))
         
         # If the save directory doesn't exist, create it
@@ -186,10 +192,15 @@ if (simLocal){
 ## Or try SLURM  ------------------------------------------------------------
 
 # Create job
-sjob1 <- slurm_apply(helperfunction,
-                     params, 
-                     jobname = saveFolder,
-                     nodes = n_nodes, 
-                     cpus_per_node = cpus_per_node, 
-                     submit = submitJob)
+if (submitJob){
+        print('Submitting to the cluster...\n')
+        
+        sjob1 <- slurm_apply(helperfunction,
+                             params, 
+                             jobname = saveFolder,
+                             nodes = n_nodes, 
+                             cpus_per_node = cpus_per_node, 
+                             submit = submitJob)        
+}
+
 

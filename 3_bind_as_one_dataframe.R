@@ -18,7 +18,7 @@ saveDF <- TRUE
 
 # This name should correspond to the name used in 1_simulation_parameters.R script
 # So that the correct files are loaded and preprocessed.
-folder <- 'try_1'
+folder <- 'try_4'
 
 # The new folder where to save the preprocessed data
 saveFolder <- file.path('./analysis_results',

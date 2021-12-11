@@ -11,7 +11,7 @@ pacman::p_load(tidyverse,
 # Load the file
 
 # This must correspond to the variable given to the previous scripts
-folderName <- 'try_1'
+folderName <- 'try_4'
 
 power_table <- import(file.path('./analysis_results',
                  folderName,
@@ -38,6 +38,15 @@ print(paste('There are ',
             ' unique combination of factors. They are:',
             sep=''))
 print(unique_combs)        
+
+# Optionally, filter the unique_combs
+unique_combs <- unique_combs %>%
+        filter(crit1 == 10,
+               crit2 == 1/10,
+               test_type == 'unpaired',
+               side_type == 'one_tailed') %>% 
+        droplevels()
+n_combs <- nrow(unique_combs)
 
 
 # Create the plot #############################################################
