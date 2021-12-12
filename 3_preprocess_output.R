@@ -52,4 +52,6 @@ preprocess_output = function(saveDF,folder){
         if (saveDF){
                 save(sims_preprocessed, file = saveName)
         }        
+        
+        return(sims_preprocessed)
 }

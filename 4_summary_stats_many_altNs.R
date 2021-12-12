@@ -1,4 +1,4 @@
-# This script will load the preprocessed dataframe from 2_preprocess_slurm_output.R
+# This script will load the preprocessed dataframe from 3_preprocess_output.R
 # It will then calculate the statistics on supporting H1/H0/undecided for many 
 # alternative maxN stopping rules. 
 
@@ -35,7 +35,7 @@ summary_stats = function(saveDF,nFrom,nTo,nBy,folderName){
         # Which preprocessed data to load?
         # This must correspond to where the simulation job was saved.
         if (missing(folderName)){
-                folderName <- 'try_1'
+                folderName <- 'results_1'
         }
         
         # Load the data and get unique factor combinations ############################
@@ -65,7 +65,7 @@ summary_stats = function(saveDF,nFrom,nTo,nBy,folderName){
         # For each combination of simulation parameters:
         for (iComb in seq(1,nrow(unique_combs))){
                 
-                print(paste('Combination #',as.character(iComb),'\n',sep=''))
+                print(paste('Combination #',as.character(iComb),sep=''))
                 print(unique_combs[iComb,])
                 
                 # From the overall dataframe, select only the part that belongs to 
@@ -81,6 +81,10 @@ summary_stats = function(saveDF,nFrom,nTo,nBy,folderName){
                                side_type == unique_combs$side_type[iComb])
         
                 # For each alternative maxN stopping rule:
+                # 1: get the rows that have n <= iN
+                # 2: For each of the simulation (id column), get the last row 
+                # which is where that simulation stopped. This row has the final 
+                # status of that particular simulation.
                 for (iN in altNs){
                         print(iN)
         
@@ -100,14 +104,16 @@ summary_stats = function(saveDF,nFrom,nTo,nBy,folderName){
         outdfbinded <- outdfbinded %>% 
                 mutate(bf_status = as.factor(
                         case_when(
-                        bf >= crit1 ~ 'H1',
-                        bf <= crit2 ~ 'H0',
-                        TRUE ~ 'undecided'
+                                bf >= crit1 ~ 'H1',
+                                bf <= crit2 ~ 'H0',
+                                TRUE ~ 'undecided'
                 )))
         
         # Summary statistics ########################################################
         
         # How many iterations were given to the original simulation job? (nIter variable)
+        # This is needed to calculate the "power" i.e. percentage of simulations 
+        # supporting various outcomes
         nIter <- sims_preprocessed %>% 
                 distinct(id, .keep_all = T) %>%
                 group_by(minN,d,crit1,crit2,batchSize,limit,test_type,side_type) %>% 
@@ -115,7 +121,7 @@ summary_stats = function(saveDF,nFrom,nTo,nBy,folderName){
                 ungroup() %>%
                 select(iter_idx) %>% max()
         
-        # Whats the average n to run to reach a certain power?
+        ## Whats the average n to run to reach a certain power? ---------------
         average_n_to_run <- 
                 outdfbinded %>%
                 group_by(minN,
@@ -130,7 +136,8 @@ summary_stats = function(saveDF,nFrom,nTo,nBy,folderName){
                 summarise(mean_n = mean(n),
                           median_n = median(n)) %>% 
                 ungroup()
-                
+        
+        ## Calculate the probabilities of supporting various outcomes ---------      
         power_table <- 
                 outdfbinded %>%
                 group_by(minN,
@@ -198,5 +205,7 @@ summary_stats = function(saveDF,nFrom,nTo,nBy,folderName){
         if (saveDF){
                 save(power_table, file = saveNameOutData)
         }
+        
+        return(power_table)
 }
 

@@ -1,7 +1,5 @@
-# This script will:
-
-# 1. Move the folder that slurm created in the working directory.This is done so
-# that the working directory doesn't get cluttered.
+# This script will move the folder that slurm created in the working directory.
+# This is done so that the working directory doesn't get cluttered.
 
 move_slurm_output = function(saveDF,folder){
         # Libraries #####################################################
@@ -18,7 +16,7 @@ move_slurm_output = function(saveDF,folder){
         # This name should correspond to the name used in 1_simulation_parameters.R script
         # So that the correct files are loaded and preprocessed.
         if (missing(folder)){
-                folder <- 'try_1'
+                folder <- 'results_1'
         }
         
         # Name of the file that has the simulation output
@@ -42,8 +40,8 @@ move_slurm_output = function(saveDF,folder){
         # Get the list of files
         current_files = list.files(old_path, full.names = TRUE)
         
-        # Check that results_0.RDS is part of the files! If its not, then slurm isn't
-        # done with the simulations. Alert the user to wait.
+        # Check that results_0.RDS is part of the list of files! If its not, 
+        # then slurm isn't done with the simulations. Alert the user to wait.
         if (file.path(old_path,'results_0.RDS') %in% current_files){
         
                 print('Moving the files...')

@@ -15,7 +15,7 @@ First, please open the .proj file. Having the project started makes sure the wor
 6_post_slurm_wrapper.R: This script is a wrapper to run scripts 2 through 5, so you don't have to run them separately. It cannot run the 1st script, because the 2nd script must wait until slurm is done with the simulations.
 
 
-## Folders:
+# Folders:
 
 data:
 Where the raw data output from slurm is copied to and left untouched.
@@ -26,4 +26,10 @@ For preprocessing and other stats results from various analysis.
 utils:
 folder containing various helper functions.
 
+# Authors:
+
+Alex Quent
+Rik Henson
+Levan Bokeria
+Andrea Greve
 

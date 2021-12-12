@@ -1,4 +1,8 @@
-# This script will plot the power by various max N per group 
+# This script will take the preprocessed data and for each unique combination of
+# factors that were simulated, it will produce two plots:
+
+# 1. A "Power" plot: probabilities of supporting H1/H0 or undecided
+# 2. Mean/median number of participants needed to reach support for H1/H0 or undecided
 
 plot_results = function(folderName){
         # Load libraries, etc ###############################
@@ -11,7 +15,7 @@ plot_results = function(folderName){
         
         # This must correspond to the variable given to the previous scripts
         if (missing(folderName)){
-                folderName <- 'try_1'                
+                folderName <- 'results_1'                
         }       
         
         power_table <- import(file.path('./analysis_results',
@@ -40,14 +44,16 @@ plot_results = function(folderName){
                     sep=''))
         print(unique_combs)        
         
-        # Optionally, filter the unique_combs
-        # unique_combs <- unique_combs %>%
-        #         filter(crit1 == 10,
-        #                crit2 == 1/10,
-        #                test_type == 'unpaired',
-        #                side_type == 'two_tailed') %>% 
-        #         droplevels()
-        # n_combs <- nrow(unique_combs)
+        # Optionally, filter the unique_combs. Sometimes, there are too many
+        # combinations while you're only interested in plotting some of them
+        
+        unique_combs <- unique_combs %>%
+                filter(crit1 == 6,
+                       crit2 == 1/6,
+                       test_type == 'unpaired',
+                       side_type == 'one_tailed') %>%
+                droplevels()
+        n_combs <- nrow(unique_combs)
         
         
         # Create the plot #############################################################
@@ -57,7 +63,7 @@ plot_results = function(folderName){
         # want
         
         
-        # Turn it into a long form version
+        # Turn it into a long form version. Works better with ggplot
         power_table_long <- 
                 power_table %>%
                 select(-starts_with('n_sim')) %>%

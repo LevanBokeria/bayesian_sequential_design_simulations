@@ -26,15 +26,15 @@ pacman::p_load(rslurm,
 # Slurm job parameters
 n_nodes       <- 1
 cpus_per_node <- 16
-nIter         <- 10000
+nIter         <- 100
 
 # Sequential design parameters. 
 # For d, crit1, and crit2 you can enter a vector of numbers.
 
-nLimit    <- 600 # maximum number of participants to run
+nLimit    <- 72 # maximum number of participants to run
 d         <- c(0,0.5) # various effect sizes to consider
-crit1     <- c(6,10) # criteria for stopping for BF10
-crit2     <- c(1/6,1/10) # criteria for stopping for BF01
+crit1     <- c(10) # criteria for stopping for BF10
+crit2     <- c(1/10) # criteria for stopping for BF01
 minN      <- 24 # Initial minimum number of participants per group
 batchSize <- 12 # How many participants to add per group when neither of the criteria are reached.
 
@@ -46,13 +46,13 @@ test_types <- c('paired','unpaired')
 side_types <- c('two_tailed','one_tailed')
 
 # Name for saving folder
-saveFolder <- 'results_1'
+saveFolder <- 'results_2'
 
 # Submit the slurm job?
-submitJob <- T
+submitJob <- F
 
 # Simulate locally? This will take much longer for large jobs
-simLocal <- F
+simLocal <- T
 
 # Define the function ########################################################
 # This function will be applied to specified parameters many times by slurm.
@@ -60,7 +60,8 @@ simLocal <- F
 helperfunction <- function(minN, d, crit1, crit2, batchSize, limit, 
                            test_type, side_type){
         
-        # Subfunction to report the BF
+        # Subfunction to efficiently report the BF
+        # Adapted from https://github.com/JAQuent/assortedRFunctions/reportBF.R
         reportBF = function(x, digits){
                 round(as.numeric(as.vector(x)), digits)
         }
@@ -83,7 +84,7 @@ helperfunction <- function(minN, d, crit1, crit2, batchSize, limit,
                 dataG1 <- rnorm(n, 0, 1)
                 dataG2 <- rnorm(n, d, 1)
 
-                #Calculate the initial bf
+                # Calculate the initial bf
                 bf <- reportBF(ttestBF(
                         dataG2,
                         dataG1,
@@ -94,7 +95,7 @@ helperfunction <- function(minN, d, crit1, crit2, batchSize, limit,
                 
                 dataG1 <- rnorm(n,d,1)
                 
-                #Calculate the initial bf
+                # Calculate the initial bf
                 bf <- reportBF(ttestBF(
                         dataG1,
                         nullInterval = null_interval
@@ -105,7 +106,10 @@ helperfunction <- function(minN, d, crit1, crit2, batchSize, limit,
         # Within simulation loop
         while(bf[length(bf)] < crit1 & bf[length(bf)] > crit2 & n < limit){
                 
-                n         <- n + batchSize
+                # If neither of the criteria is reached and the limit isn't reached
+                # increase the n by batchsize, generate additional data, and check 
+                # the BFs again
+                n <- n + batchSize
                 
                 
                 if (test_type == 'unpaired'){
@@ -120,8 +124,8 @@ helperfunction <- function(minN, d, crit1, crit2, batchSize, limit,
                                 )[1],4)
                         
                 } else if (test_type == 'paired'){
-                        dataG1    <- c(dataG1, rnorm(batchSize, d, 1))
                         
+                        dataG1    <- c(dataG1, rnorm(batchSize, d, 1))
                         
                         bf[i + 1] <- reportBF(ttestBF(
                                 dataG1,
@@ -151,7 +155,7 @@ helperfunction <- function(minN, d, crit1, crit2, batchSize, limit,
 # slurm will iterate over these with the helperfunction
 
 
-# First, create all combinations
+# First, create all the combinations
 cart_prod <- expand.grid(minN,
                      d,
                      crit1,
