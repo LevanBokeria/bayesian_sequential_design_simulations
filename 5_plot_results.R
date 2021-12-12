@@ -47,13 +47,13 @@ plot_results = function(folderName){
         # Optionally, filter the unique_combs. Sometimes, there are too many
         # combinations while you're only interested in plotting some of them
         
-        unique_combs <- unique_combs %>%
-                filter(crit1 == 6,
-                       crit2 == 1/6,
-                       test_type == 'unpaired',
-                       side_type == 'one_tailed') %>%
-                droplevels()
-        n_combs <- nrow(unique_combs)
+        # unique_combs <- unique_combs %>%
+        #         filter(crit1 == 10,
+        #                crit2 == 1/10,
+        #                test_type == 'unpaired',
+        #                side_type == 'one_tailed') %>%
+        #         droplevels()
+        # n_combs <- nrow(unique_combs)
         
         
         # Create the plot #############################################################
@@ -152,4 +152,6 @@ plot_results = function(folderName){
                 print(fig2)
         
         }
+
+        return(power_table)
 }
