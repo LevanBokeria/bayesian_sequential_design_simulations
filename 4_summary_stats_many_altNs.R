@@ -25,7 +25,7 @@ summary_stats = function(saveDF,nFrom,nTo,nBy,folderName){
                 nFrom <- 24
         }
         if (missing(nTo)){
-                nTo <- 240
+                nTo <- 600
         }
         if (missing(nBy)){
                 nBy <- 12
