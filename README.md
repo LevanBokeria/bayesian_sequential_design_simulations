@@ -1,6 +1,7 @@
-# Main sequence of scripts to run simulations:
+# Main sequence of steps to run simulations:
 
 First, please open the .Rproj file. Having the project started makes sure the working directory is set correctly.
+Then, please make sure Rstudio packages are up-to-date. In particular, please make sure to install the "pacman" package using install.packages('pacman')
 
 1_simulation_parameters.R: specify various types of simulations you'd like to run. You can either run on the cluster or locally.
 
