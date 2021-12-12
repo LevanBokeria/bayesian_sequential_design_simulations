@@ -1,6 +1,6 @@
 # Main sequence of scripts to run simulations:
 
-First, please open the .proj file. Having the project started makes sure the working directory is set correctly.
+First, please open the .Rproj file. Having the project started makes sure the working directory is set correctly.
 
 1_simulation_parameters.R: specify various types of simulations you'd like to run. You can either run on the cluster or locally.
 
@@ -28,8 +28,8 @@ folder containing various helper functions.
 
 # Authors:
 
-Alex Quent
-Rik Henson
-Levan Bokeria
-Andrea Greve
+- Alex Quent
+- Rik Henson
+- Levan Bokeria
+- Andrea Greve
 
