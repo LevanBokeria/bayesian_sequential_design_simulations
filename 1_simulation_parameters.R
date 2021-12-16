@@ -18,8 +18,7 @@ set.seed(789654)
 # Libraries
 pacman::p_load(rslurm,
                BayesFactor,
-               tidyverse,
-               rio)
+               tidyverse)
 
 # Setup simulation parameters and flags #######################################
 
