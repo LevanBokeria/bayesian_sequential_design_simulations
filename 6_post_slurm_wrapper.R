@@ -12,17 +12,17 @@ source('./5_plot_results.R')
 saveData <- TRUE
 
 # For the summary stats
-nFrom <- 24
-nTo   <- 600
-nBy   <- 12
+nFrom <- 20
+nTo   <- 410
+nBy   <- 15
 
 # Folder where the slurm output is
-folder <- 'results_2'
+folder <- 'results_schema_boards'
 
 # Now, call each function ######################################################
 
 ## 2_move_slurm_output --------------------------------------------------------
-move_slurm_output(saveData,folder)
+# move_slurm_output(saveData,folder)
 
 ## 3_preprocess_output --------------------------------------------------------
 sims_preprocessed <- preprocess_output(saveData,folder)
