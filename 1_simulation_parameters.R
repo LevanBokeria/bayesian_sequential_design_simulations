@@ -30,22 +30,22 @@ nIter         <- 10000
 # Sequential design parameters. 
 # For d, crit1, and crit2 you can enter a vector of numbers.
 
-nLimit    <- 600 # maximum number of participants to run
-d         <- c(0,0.5) # various effect sizes to consider
+nLimit    <- 410 # maximum number of participants to run
+d         <- c(0,0.25,0.5) # various effect sizes to consider
 crit1     <- c(10,6) # criteria for stopping for BF10
 crit2     <- c(1/10,1/6) # criteria for stopping for BF01
-minN      <- 24 # Initial minimum number of participants per group
-batchSize <- 12 # How many participants to add per group when neither of the criteria are reached.
+minN      <- 20 # Initial minimum number of participants per group
+batchSize <- 15 # How many participants to add per group when neither of the criteria are reached.
 
 # Note: if various batchSizes are simulated the post-processing scripts
 # might not work.
 
 # What type of test is it?
-test_types <- c('paired','unpaired')
+test_types <- c('paired')
 side_types <- c('two_tailed','one_tailed')
 
 # Name for saving folder
-saveFolder <- 'results_2'
+saveFolder <- 'results_schema_boards'
 
 # Submit the slurm job?
 submitJob <- T
