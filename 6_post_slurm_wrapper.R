@@ -17,7 +17,7 @@ nTo   <- 600
 nBy   <- 12
 
 # Folder where the slurm output is
-folder <- 'results_1'
+folder <- 'results_2'
 
 # Now, call each function ######################################################
 

@@ -13,7 +13,7 @@
 rm(list=ls())
 
 # Setting seed
-set.seed(911225)
+set.seed(789654)
 
 # Libraries
 pacman::p_load(rslurm,
@@ -46,7 +46,7 @@ test_types <- c('paired','unpaired')
 side_types <- c('two_tailed','one_tailed')
 
 # Name for saving folder
-saveFolder <- 'results_1'
+saveFolder <- 'results_2'
 
 # Submit the slurm job?
 submitJob <- T
