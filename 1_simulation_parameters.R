@@ -60,7 +60,7 @@ helperfunction <- function(minN, d, crit1, crit2, batchSize, limit,
                            test_type, side_type){
         
         # Subfunction to efficiently report the BF
-        # Adapted from https://github.com/JAQuent/assortedRFunctions/reportBF.R
+        # Adapted from https://github.com/JAQuent/assortedRFunctions/R/reportBF.R
         reportBF = function(x, digits){
                 round(as.numeric(as.vector(x)), digits)
         }
