@@ -22,7 +22,7 @@ folder <- 'results_schema_boards'
 # Now, call each function ######################################################
 
 ## 2_move_slurm_output --------------------------------------------------------
-# move_slurm_output(saveData,folder)
+move_slurm_output(saveData,folder)
 
 ## 3_preprocess_output --------------------------------------------------------
 sims_preprocessed <- preprocess_output(saveData,folder)

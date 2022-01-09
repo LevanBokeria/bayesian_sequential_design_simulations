@@ -1,0 +1,78 @@
+---
+title: "mmm_presentation"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r libraries-global-options}
+# Clean the environment
+rm(list=ls())
+
+# Load the packages
+pacman::p_load(pacman,
+               tidyverse,
+               rio,
+               kableExtra)
+
+```
+
+```{r load-data}
+
+folderName <- 'results_1'
+
+
+sims_preprocessed <- import('./analysis_results/results_1/sims_preprocessed.RData')
+
+power_table <- import('./analysis_results/results_1/power_table.RData')
+
+```
+
+```{r what-factors-are-there}
+
+# How many combination of factors do we have?
+unique_combs <- sims_preprocessed %>%
+        select(minN,d,crit1,crit2,batchSize,limit,test_type,side_type) %>%
+        distinct()
+
+unique_combs
+
+```
+
+```{r explain-sims-preprocessed}
+
+head(sims_preprocessed,10)
+
+```
+
+```{r explain-power-table}
+
+# Take just one of the simulations:
+power_table_slice <- power_table %>%
+        filter(minN == unique_combs$minN[1],
+               d == unique_combs$d[1],
+               crit1 == unique_combs$crit1[1],
+               crit2 == unique_combs$crit2[1],
+               batchSize == unique_combs$batchSize[1],
+               limit == unique_combs$limit[1],
+               test_type == unique_combs$test_type[1],
+               side_type == unique_combs$side_type[1]) 
+
+# Sort by altMaxN
+power_table_slice <- power_table_slice %>%
+        arrange(altMaxN)
+
+power_table_slice %>%
+        knitr::kable() %>%
+        kable_styling(bootstrap_options = "striped")
+
+```
+
+```{r plot-power-table-slice}
+
+
+
+```
+
