@@ -104,8 +104,8 @@ summary_stats = function(saveDF,nFrom,nTo,nBy,folderName){
         outdfbinded <- outdfbinded %>% 
                 mutate(bf_status = as.factor(
                         case_when(
-                                bf >= crit1 ~ 'H1',
-                                bf <= crit2 ~ 'H0',
+                                bf > crit1 ~ 'H1',
+                                bf < crit2 ~ 'H0',
                                 TRUE ~ 'undecided'
                 )))
         
