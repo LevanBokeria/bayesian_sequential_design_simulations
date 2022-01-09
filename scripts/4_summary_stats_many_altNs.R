@@ -196,6 +196,19 @@ summary_stats = function(saveDF,nFrom,nTo,nBy,folderName){
         power_table <- merge(power_table,
                              average_n_to_run)
         
+        # Sort so that maxAltNs are in ascending order:
+        power_table <- power_table %>% 
+                group_by(minN,
+                         d,
+                         crit1,
+                         crit2,
+                         limit,
+                         batchSize,
+                         test_type,
+                         side_type,
+                         ) %>%
+                arrange(altMaxN, .by_group = TRUE)
+        
         # Save the data ###############################################################
         
         saveNameOutData <- file.path('./analysis_results',

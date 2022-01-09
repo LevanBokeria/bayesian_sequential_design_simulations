@@ -25,33 +25,33 @@ pacman::p_load(rslurm,
 # Slurm job parameters
 n_nodes       <- 1
 cpus_per_node <- 16
-nIter         <- 10000
+nIter         <- 50
 
 # Sequential design parameters. 
 # For d, crit1, and crit2 you can enter a vector of numbers.
 
-nLimit    <- 410 # maximum number of participants to run
-d         <- c(0,0.25,0.5) # various effect sizes to consider
-crit1     <- c(10,6) # criteria for stopping for BF10
+nLimit    <- 100 # maximum number of participants to run
+d         <- c(0,0.5) # various effect sizes to consider
+crit1     <- c(10) # criteria for stopping for BF10
 crit2     <- c(1/10,1/6) # criteria for stopping for BF01
-minN      <- 20 # Initial minimum number of participants per group
-batchSize <- 15 # How many participants to add per group when neither of the criteria are reached.
+minN      <- 10 # Initial minimum number of participants per group
+batchSize <- 5 # How many participants to add per group when neither of the criteria are reached.
 
 # Note: if various batchSizes are simulated the post-processing scripts
 # might not work.
 
 # What type of test is it?
-test_types <- c('paired')
-side_types <- c('two_tailed','one_tailed')
+test_types <- c('unpaired')
+side_types <- c('two_tailed')
 
 # Name for saving folder
-saveFolder <- 'results_schema_boards'
+saveFolder <- 'results_mmm_1'
 
 # Submit the slurm job?
-submitJob <- T
+submitJob <- FALSE
 
 # Simulate locally? This will take much longer for large jobs
-simLocal <- F
+simLocal <- TRUE
 
 # Define the function ########################################################
 # This function will be applied to specified parameters many times by slurm.
@@ -60,7 +60,7 @@ helperfunction <- function(minN, d, crit1, crit2, batchSize, limit,
                            test_type, side_type){
         
         # Subfunction to efficiently report the BF
-        # Adapted from https://github.com/JAQuent/assortedRFunctions/R/reportBF.R
+        # From https://github.com/JAQuent/assortedRFunctions/R/reportBF.R
         reportBF = function(x, digits){
                 round(as.numeric(as.vector(x)), digits)
         }

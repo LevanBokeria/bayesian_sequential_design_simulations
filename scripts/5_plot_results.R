@@ -47,14 +47,15 @@ plot_results = function(folderName){
         # Optionally, filter the unique_combs. Sometimes, there are too many
         # combinations while you're only interested in plotting some of them
         
-        unique_combs <- unique_combs %>%
-                filter(crit1 == 10,
-                       crit2 == 1/6,
-                       test_type == 'paired',
-                       side_type == 'two_tailed') %>%
-                droplevels()
-        n_combs <- nrow(unique_combs)
-        
+        # print('WARNING: you are filtering the results and only looking at some of the simulations')
+        # unique_combs <- unique_combs %>%
+        #         filter(crit1 == 10,
+        #                crit2 == 1/6,
+        #                test_type == 'paired',
+        #                side_type == 'two_tailed') %>%
+        #         droplevels()
+        # n_combs <- nrow(unique_combs)
+
         
         # Create the plot #############################################################
         
@@ -81,6 +82,8 @@ plot_results = function(folderName){
                 print(unique_combs[iComb,])
                 
                 title_string <- paste(
+                        'Power curves for the following simulation:',
+                        '\n',
                         'd = ',unique_combs$d[iComb],
                         '; crit1 = ',round(unique_combs$crit1[iComb],4),
                         '; crit2 = ',round(unique_combs$crit2[iComb],4),
