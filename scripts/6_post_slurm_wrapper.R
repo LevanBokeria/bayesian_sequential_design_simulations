@@ -17,7 +17,7 @@ nTo   <- 100
 nBy   <- 5
 
 # Folder where the slurm output is
-folder <- 'results_mmm_1'
+folder <- 'results_density'
 
 # Now, call each function ######################################################
 
@@ -31,4 +31,4 @@ sims_preprocessed <- preprocess_output(saveData,folder)
 power_table <- summary_stats(saveData,nFrom,nTo,nBy,folder)
 
 ## 5_plot_results -------------------------------------------------------------
-plot_results(folder)
+# plot_results(folder)

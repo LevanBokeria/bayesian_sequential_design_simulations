@@ -30,28 +30,32 @@ nIter         <- 10000
 # Sequential design parameters. 
 # For d, crit1, and crit2 you can enter a vector of numbers.
 
-nLimit    <- 100 # maximum number of participants to run
-d         <- c(0.5) # various effect sizes to consider
-crit1     <- c(10) # criteria for stopping for BF10
+nLimit    <- 400 # maximum number of participants to run
+d         <- c(0,
+               0.64,
+               1.72,
+               0.58,
+               1.57) # various effect sizes to consider
+crit1     <- c(6,10) # criteria for stopping for BF10
 crit2     <- c(1/6) # criteria for stopping for BF01
-minN      <- 10 # Initial minimum number of participants per group
-batchSize <- 2 # How many participants to add per group when neither of the criteria are reached.
+minN      <- 20 # Initial minimum number of participants per group
+batchSize <- 10 # How many participants to add per group when neither of the criteria are reached.
 
 # Note: if various batchSizes are simulated the post-processing scripts
 # might not work.
 
 # What type of test is it?
-test_types <- c('unpaired')
-side_types <- c('two_tailed')
+test_types <- c('unpaired','paired')
+side_types <- c('two_tailed','one_tailed')
 
 # Name for saving folder
-saveFolder <- 'results_mmm_small_batchsize'
+saveFolder <- 'results_density'
 
 # Submit the slurm job?
-submitJob <- FALSE
+submitJob <- T
 
 # Simulate locally? This will take much longer for large jobs
-simLocal <- TRUE
+simLocal <- F
 
 # Define the function ########################################################
 # This function will be applied to specified parameters many times by slurm.
