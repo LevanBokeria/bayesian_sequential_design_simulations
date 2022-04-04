@@ -15,7 +15,7 @@ plot_results = function(folderName){
         
         # This must correspond to the variable given to the previous scripts
         if (missing(folderName)){
-                folderName <- 'results_schema_boards'                
+                folderName <- 'results_density'                
         }       
         
         power_table <- import(file.path('./analysis_results',
@@ -48,13 +48,13 @@ plot_results = function(folderName){
         # combinations while you're only interested in plotting some of them
         
         # print('WARNING: you are filtering the results and only looking at some of the simulations')
-        # unique_combs <- unique_combs %>%
-        #         filter(crit1 == 10,
-        #                crit2 == 1/6,
-        #                test_type == 'paired',
-        #                side_type == 'two_tailed') %>%
-        #         droplevels()
-        # n_combs <- nrow(unique_combs)
+        unique_combs <- unique_combs %>%
+                filter(crit1 == 10,
+                       crit2 == 1/6,
+                       test_type == 'paired',
+                       side_type == 'one_tailed') %>%
+                droplevels()
+        n_combs <- nrow(unique_combs)
 
         
         # Create the plot #############################################################

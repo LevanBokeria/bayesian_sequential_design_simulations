@@ -12,9 +12,9 @@ source('./scripts/5_plot_results.R')
 saveData <- TRUE
 
 # For the summary stats
-nFrom <- 10
-nTo   <- 100
-nBy   <- 5
+nFrom <- 20
+nTo   <- 400
+nBy   <- 10
 
 # Folder where the slurm output is
 folder <- 'results_density'
@@ -22,7 +22,7 @@ folder <- 'results_density'
 # Now, call each function ######################################################
 
 ## 2_move_slurm_output --------------------------------------------------------
-move_slurm_output(saveData,folder)
+# move_slurm_output(saveData,folder)
 
 ## 3_preprocess_output --------------------------------------------------------
 sims_preprocessed <- preprocess_output(saveData,folder)
