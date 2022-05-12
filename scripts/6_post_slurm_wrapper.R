@@ -17,12 +17,12 @@ nTo   <- 400
 nBy   <- 10
 
 # Folder where the slurm output is
-folder <- 'results_density'
+folder <- 'results_density_across_choose_sparse'
 
 # Now, call each function ######################################################
 
 ## 2_move_slurm_output --------------------------------------------------------
-# move_slurm_output(saveData,folder)
+move_slurm_output(saveData,folder)
 
 ## 3_preprocess_output --------------------------------------------------------
 sims_preprocessed <- preprocess_output(saveData,folder)
