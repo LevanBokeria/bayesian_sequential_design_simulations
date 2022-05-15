@@ -32,10 +32,8 @@ nIter         <- 10000
 
 nLimit    <- 400 # maximum number of participants to run
 d         <- c(0,
-               0.64,
-               1.72,
-               0.58,
-               1.57) # various effect sizes to consider
+               0.84,
+               1.72) # various effect sizes to consider
 crit1     <- c(6,10) # criteria for stopping for BF10
 crit2     <- c(1/6) # criteria for stopping for BF01
 minN      <- 20 # Initial minimum number of participants per group
@@ -49,7 +47,7 @@ test_types <- c('unpaired','paired')
 side_types <- c('two_tailed','one_tailed')
 
 # Name for saving folder
-saveFolder <- 'results_density'
+saveFolder <- 'results_density_across_choose_sparse'
 
 # Submit the slurm job?
 submitJob <- T
