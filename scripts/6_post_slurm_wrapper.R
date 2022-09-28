@@ -12,12 +12,12 @@ source('./scripts/5_plot_results.R')
 saveData <- TRUE
 
 # For the summary stats
-nFrom <- 24
-nTo   <- 200
-nBy   <- 8
+nFrom <- 32
+nTo   <- 400
+nBy   <- 16
 
 # Folder where the slurm output is
-folder <- 'results_generalization'
+folder <- 'results_spatial_schema_32_new'
 
 # Now, call each function ######################################################
 
@@ -31,4 +31,4 @@ sims_preprocessed <- preprocess_output(saveData,folder)
 power_table <- summary_stats(saveData,nFrom,nTo,nBy,folder)
 
 ## 5_plot_results -------------------------------------------------------------
-plot_results(folder)
+# plot_results(folder)
