@@ -30,24 +30,23 @@ nIter         <- 10000
 # Sequential design parameters. 
 # For d, crit1, and crit2 you can enter a vector of numbers.
 
-nLimit    <- 400 # maximum number of participants to run
+nLimit    <- 200 # maximum number of participants to run
 d         <- c(0,
-               0.84,
-               1.72) # various effect sizes to consider
-crit1     <- c(6,10) # criteria for stopping for BF10
+               1) # various effect sizes to consider
+crit1     <- c(6) # criteria for stopping for BF10
 crit2     <- c(1/6) # criteria for stopping for BF01
-minN      <- 20 # Initial minimum number of participants per group
-batchSize <- 10 # How many participants to add per group when neither of the criteria are reached.
+minN      <- 24 # Initial minimum number of participants per group
+batchSize <- 8 # How many participants to add per group when neither of the criteria are reached.
 
 # Note: if various batchSizes are simulated the post-processing scripts
 # might not work.
 
 # What type of test is it?
-test_types <- c('unpaired','paired')
-side_types <- c('two_tailed','one_tailed')
+test_types <- c('unpaired')
+side_types <- c('two_tailed')
 
 # Name for saving folder
-saveFolder <- 'results_density_across_choose_sparse'
+saveFolder <- 'results_generalization'
 
 # Submit the slurm job?
 submitJob <- T
