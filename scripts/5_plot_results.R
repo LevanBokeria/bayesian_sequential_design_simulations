@@ -15,7 +15,7 @@ plot_results = function(folderName){
         
         # This must correspond to the variable given to the previous scripts
         if (missing(folderName)){
-                folderName <- 'results_density_across_choose_sparse'                
+                folderName <- 'results_spatial_schema_32_new'                
         }       
         
         power_table <- import(file.path('./analysis_results',
@@ -47,15 +47,15 @@ plot_results = function(folderName){
         # Optionally, filter the unique_combs. Sometimes, there are too many
         # combinations while you're only interested in plotting some of them
         
-        print('WARNING: you are filtering the results and only looking at some of the simulations')
-        unique_combs <- unique_combs %>%
-                filter(d %in% c(0,0.64),
-                       crit1 == 10,
-                       crit2 == 1/6,
-                       test_type == 'paired',
-                       side_type == 'two_tailed') %>%
-                droplevels()
-        n_combs <- nrow(unique_combs)
+        # print('WARNING: you are filtering the results and only looking at some of the simulations')
+        # unique_combs <- unique_combs %>%
+        #         filter(d %in% c(0,0.64),
+        #                crit1 == 10,
+        #                crit2 == 1/6,
+        #                test_type == 'paired',
+        #                side_type == 'two_tailed') %>%
+        #         droplevels()
+        # n_combs <- nrow(unique_combs)
 
         
         # Create the plot #############################################################
