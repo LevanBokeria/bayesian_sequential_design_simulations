@@ -31,8 +31,8 @@ nIter         <- 10000
 # For d, crit1, and crit2 you can enter a vector of numbers.
 
 nLimit    <- 400 # maximum number of participants to run
-d         <- c(0,0.5) # various effect sizes to consider
-crit1     <- c(6,10) # criteria for stopping for BF10
+d         <- c(0.5) # various effect sizes to consider
+crit1     <- c(6) # criteria for stopping for BF10
 crit2     <- c(1/6) # criteria for stopping for BF01
 minN      <- 32 # Initial minimum number of participants per group
 batchSize <- 16 # How many participants to add per group when neither of the criteria are reached.
@@ -42,10 +42,10 @@ batchSize <- 16 # How many participants to add per group when neither of the cri
 
 # What type of test is it?
 test_types <- c('paired')
-side_types <- c('one_tailed')
+side_types <- c('two_tailed')
 
 # Name for saving folder
-saveFolder <- 'results_spatial_schema_32_new'
+saveFolder <- 'results_spatial_schema_32_two_tailed'
 
 # Submit the slurm job?
 submitJob <- T
