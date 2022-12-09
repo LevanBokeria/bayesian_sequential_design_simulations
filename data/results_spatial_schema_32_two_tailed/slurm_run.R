@@ -23,8 +23,8 @@ library(forcats, quietly = TRUE)
 .rslurm_func <- readRDS('f.RDS')
 .rslurm_params <- readRDS('params.RDS')
 .rslurm_id <- as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
-.rslurm_istart <- .rslurm_id * 10000 + 1
-.rslurm_iend <- min((.rslurm_id + 1) * 10000, nrow(.rslurm_params))
+.rslurm_istart <- .rslurm_id * 20000 + 1
+.rslurm_iend <- min((.rslurm_id + 1) * 20000, nrow(.rslurm_params))
 .rslurm_result <- do.call(parallel::mcmapply, c(
     FUN = .rslurm_func,
     .rslurm_params[.rslurm_istart:.rslurm_iend, , drop = FALSE],
